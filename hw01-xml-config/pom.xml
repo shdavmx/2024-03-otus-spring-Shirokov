@@ -15,6 +15,9 @@
         <spring.version>6.1.6</spring.version>
         <lombok.version>1.18.32</lombok.version>
         <opencsv.version>5.9</opencsv.version>
+        <junit.version>5.10.2</junit.version>
+        <assertj.version>3.25.2</assertj.version>
+        <mockito.version>5.12.0</mockito.version>
     </properties>
 
     <dependencies>
@@ -41,6 +44,34 @@
                     <artifactId>commons-collections</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

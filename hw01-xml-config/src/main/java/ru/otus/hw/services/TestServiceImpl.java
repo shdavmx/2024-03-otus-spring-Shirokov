@@ -30,7 +30,7 @@ public class TestServiceImpl implements TestService {
             int index = 0;
             for (Answer answer : question.getAnswers()) {
                 if (answer.isFailed()) {
-                    ioService.printFormattedLine("[Error] Failed to read question: %s", question.getErrorText());
+                    ioService.printFormattedLine("[Error] Failed to read answer: %s", question.getErrorText());
                     continue;
                 }
 
