@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 public class Question extends BaseDomain {
     private String question;
+
     private List<Answer> answers;
 
     public Question(String question, List<Answer> answers) {

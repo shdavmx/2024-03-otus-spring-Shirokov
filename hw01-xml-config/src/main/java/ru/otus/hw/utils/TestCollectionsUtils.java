@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TestCollectionsUtils {
     public static List<Question> toListQuestions(List<QuestionDto> questionDtos) {
-        if(questionDtos == null || questionDtos.isEmpty()) {
+        if (questionDtos == null || questionDtos.isEmpty()) {
             return null;
         }
 

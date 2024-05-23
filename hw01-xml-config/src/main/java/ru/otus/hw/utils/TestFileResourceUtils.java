@@ -13,7 +13,7 @@ public class TestFileResourceUtils {
         ClassLoader loader = loadedClass.getClassLoader();
         InputStream inputStream = loader.getResourceAsStream(filePath);
 
-        if(inputStream == null) {
+        if (inputStream == null) {
             throw new IllegalArgumentException("File not found:" + filePath);
         }
 

@@ -14,14 +14,12 @@ public class AnswerCsvConverter extends AbstractCsvConverter {
             answer.setFailed(true);
             answer.setErrorText(String.format("Could not parse answer text: '%s'." +
                     "Parsed values less than 2", value));
-        }
-        else if (valueArr[0].isEmpty() ||
+        } else if (valueArr[0].isEmpty() ||
                  valueArr[1].isEmpty()) {
             answer.setFailed(true);
             answer.setErrorText(String.format("Could not parse answer text: '%s'." +
                     "Some parsed values are empty", value));
-        }
-        else {
+        } else {
             answer.setAnswer(valueArr[0]);
             answer.setCorrect(Boolean.parseBoolean(valueArr[1]));
         }

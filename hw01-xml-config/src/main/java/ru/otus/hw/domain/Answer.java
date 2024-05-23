@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class Answer extends BaseDomain {
     private String answer;
+
     private boolean isCorrect;
 
     public Answer(String answer, boolean isCorrect) {

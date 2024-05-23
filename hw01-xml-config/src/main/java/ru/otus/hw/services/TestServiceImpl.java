@@ -10,6 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
     private final IOService ioService;
+
     private final QuestionDao questionDao;
 
     @Override
@@ -18,8 +19,8 @@ public class TestServiceImpl implements TestService {
         ioService.printFormattedLine("Please answer the questions below%n");
 
         List<Question> questions = questionDao.findAll();
-        for(Question question : questions) {
-            if(question.isFailed()) {
+        for (Question question : questions) {
+            if (question.isFailed()) {
                 ioService.printFormattedLine("[Error] Failed to read question: %s", question.getErrorText());
                 continue;
             }
@@ -27,8 +28,8 @@ public class TestServiceImpl implements TestService {
             ioService.printLine(question.getQuestion());
 
             int index = 0;
-            for(Answer answer : question.getAnswers()) {
-                if(answer.isFailed()) {
+            for (Answer answer : question.getAnswers()) {
+                if (answer.isFailed()) {
                     ioService.printFormattedLine("[Error] Failed to read question: %s", question.getErrorText());
                     continue;
                 }

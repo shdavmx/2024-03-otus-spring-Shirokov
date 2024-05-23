@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class BaseDomain {
     private boolean isFailed;
+
     private String errorText;
 }

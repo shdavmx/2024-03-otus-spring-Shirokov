@@ -30,8 +30,7 @@ public class CsvQuestionDao implements QuestionDao {
                     .build();
 
             questions = builder.parse();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw  new QuestionReadException("File not found", new Exception());
         }
 
