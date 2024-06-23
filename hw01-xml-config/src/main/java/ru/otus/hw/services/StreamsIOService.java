@@ -18,4 +18,9 @@ public class StreamsIOService implements IOService {
     public void printFormattedLine(String line, Object ...args) {
         printStream.printf(line + "%n", args);
     }
+
+    public void printException(RuntimeException e) {
+        printStream.println("[Error][RuntimeException]");
+        printStream.println(e.getMessage());
+    }
 }

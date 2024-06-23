@@ -2,8 +2,9 @@ package ru.otus.hw.services;
 
 import lombok.RequiredArgsConstructor;
 import ru.otus.hw.dao.QuestionDao;
-import ru.otus.hw.domain.Answer;
-import ru.otus.hw.domain.Question;
+import ru.otus.hw.dao.dto.AnswerDto;
+import ru.otus.hw.dao.dto.QuestionDto;
+import ru.otus.hw.exceptions.QuestionReadException;
 
 import java.util.List;
 
@@ -18,25 +19,19 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
         ioService.printFormattedLine("Please answer the questions below%n");
 
-        List<Question> questions = questionDao.findAll();
-        for (Question question : questions) {
-            if (question.isFailed()) {
-                ioService.printFormattedLine("[Error] Failed to read question: %s", question.getErrorText());
-                continue;
-            }
+        try {
+            List<QuestionDto> questions = questionDao.findAll();
+            for (QuestionDto question : questions) {
+                ioService.printLine(question.getText());
 
-            ioService.printLine(question.getQuestion());
-
-            int index = 0;
-            for (Answer answer : question.getAnswers()) {
-                if (answer.isFailed()) {
-                    ioService.printFormattedLine("[Error] Failed to read answer: %s", question.getErrorText());
-                    continue;
+                int index = 0;
+                for (AnswerDto answer : question.getAnswers()) {
+                    index++;
+                    ioService.printFormattedLine("\t%d.%s", index, answer.getText());
                 }
-
-                index++;
-                ioService.printFormattedLine("\t%d.%s", index, answer.getAnswer());
             }
+        } catch (QuestionReadException e) {
+            ioService.printException(e);
         }
     }
 }
