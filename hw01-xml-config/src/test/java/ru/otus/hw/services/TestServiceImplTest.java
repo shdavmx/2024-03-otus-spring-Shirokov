@@ -8,9 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.hw.dao.QuestionDao;
-import ru.otus.hw.dao.dto.AnswerDto;
 import ru.otus.hw.dao.dto.QuestionDto;
 import ru.otus.hw.domain.Answer;
+import ru.otus.hw.domain.Question;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,34 +29,20 @@ public class TestServiceImplTest {
     @InjectMocks
     private TestServiceImpl testService;
 
-    private List<QuestionDto> questions = new ArrayList<>();
-
-    private final List<AnswerDto> answersList =
+    private final List<Answer> answersList =
             List.of(
-                    new AnswerDto(new Answer("Answer1", true)),
-                    new AnswerDto(new Answer("Answer2", false)));
-
-    @BeforeEach
-    public void setUp() {
-        questions.clear();
-
-        QuestionDto question1 = new QuestionDto();
-        question1.setText("Question1");
-        question1.setAnswers(answersList);
-        questions.add(question1);
-
-        QuestionDto question2 = new QuestionDto();
-        question2.setText("Question2");
-        question2.setAnswers(answersList);
-        questions.add(question2);
-    }
+                    new Answer("Answer1", true),
+                    new Answer("Answer2", false));
 
     @DisplayName("findAll function")
     @Test
     void shouldExecuteThreeTimes() {
         doNothing().when(ioService).printLine(any());
 
-        given(questionDao.findAll()).willReturn(questions);
+        given(questionDao.findAll()).willReturn(List.of(
+                new Question("Question1", answersList),
+                new Question("Question2", answersList)
+        ));
 
         testService.executeTest();
 

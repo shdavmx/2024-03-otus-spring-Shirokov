@@ -6,8 +6,7 @@ import ru.otus.hw.domain.Question;
 import java.util.List;
 
 public interface QuestionDao {
+    List<Question> findAll();
 
-    List<QuestionDto> findAll();
-
-    List<Question> toListQuestions(List<QuestionDto> questionDtos);
+    List<Question> toDomainObjects(List<QuestionDto> questionDtoList);
 }

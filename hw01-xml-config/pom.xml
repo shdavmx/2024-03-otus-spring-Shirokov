@@ -24,6 +24,7 @@
         <checkstyle.config.url>
             https://raw.githubusercontent.com/OtusTeam/Spring/master/checkstyle.xml
         </checkstyle.config.url>
+        <maven-plagin.version>3.2.7</maven-plagin.version>
         <start-class>ru.otus.hw.Main</start-class>
     </properties>
 
@@ -120,6 +121,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${maven-plagin.version}</version>
                 <configuration>
                     <mainClass>${start-class}</mainClass>
                     <layout>JAR</layout>

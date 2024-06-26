@@ -16,11 +16,8 @@
         <constructor-arg index="0" value="questions.csv"/>
     </bean>
 
-    <bean id="answerDao" class="ru.otus.hw.dao.CsvAnswerDao"/>
-
     <bean id="questionDao" class="ru.otus.hw.dao.CsvQuestionDao">
         <constructor-arg index="0" ref="fileNameProvider"/>
-        <constructor-arg index="1" ref="answerDao"/>
     </bean>
 
     <bean id="testService" class="ru.otus.hw.services.TestServiceImpl">
