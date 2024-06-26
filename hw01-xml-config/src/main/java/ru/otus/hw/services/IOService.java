@@ -6,4 +6,6 @@ public interface IOService {
     void printLine(String line);
 
     void printFormattedLine(String line, Object ...args);
+
+    void printError(String error);
 }

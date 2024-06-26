@@ -23,4 +23,9 @@ public class StreamsIOService implements IOService {
         printStream.println("[Error][RuntimeException]");
         printStream.println(e.getMessage());
     }
+
+    public void printError(String error) {
+        String errorMessage = String.format("[Error] %s", error);
+        printStream.println(errorMessage);
+    }
 }

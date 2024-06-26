@@ -23,7 +23,8 @@ public class CsvQuestionDao implements QuestionDao {
         List<Question> questions;
         try (Reader questionsReader =
             TestFileResourceUtils.getResourceFileReader(getClass(),fileNameProvider.getTestFileName())) {
-            CsvToBean<QuestionDto> builder = new CsvToBeanBuilder(questionsReader).withType(QuestionDto.class)
+            CsvToBean<QuestionDto> builder = new CsvToBeanBuilder<QuestionDto>(questionsReader)
+                    .withType(QuestionDto.class)
                     .withSeparator(';')
                     .withSkipLines(1)
                     .withIgnoreEmptyLine(true)
@@ -32,7 +33,8 @@ public class CsvQuestionDao implements QuestionDao {
             List<QuestionDto> questionDtoList = builder.parse();
             questions = toDomainObjects(questionDtoList);
         } catch (Exception e) {
-            throw  new QuestionReadException("File not found", new Exception());
+            throw  new QuestionReadException(
+                    String.format("File '%s' not found", fileNameProvider.getTestFileName()), e);
         }
 
         return questions;
@@ -40,10 +42,6 @@ public class CsvQuestionDao implements QuestionDao {
 
     @Override
     public List<Question> toDomainObjects(List<QuestionDto> questionDtoList) {
-        if (questionDtoList == null || questionDtoList.isEmpty()) {
-            return new ArrayList<>();
-        }
-
         List<Question> questions = new ArrayList<>();
         for (QuestionDto questionDto : questionDtoList) {
             questions.add(questionDto.toDomainObject());

@@ -31,7 +31,7 @@ public class TestServiceImpl implements TestService {
                 }
             }
         } catch (QuestionReadException e) {
-            ioService.printException(e);
+            ioService.printError(e.getMessage());
         }
     }
 }

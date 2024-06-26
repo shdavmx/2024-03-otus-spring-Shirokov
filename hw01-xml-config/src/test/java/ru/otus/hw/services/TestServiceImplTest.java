@@ -31,9 +31,9 @@ public class TestServiceImplTest {
                     new Answer("Answer1", true),
                     new Answer("Answer2", false));
 
-    @DisplayName("findAll function")
+    @DisplayName("Should print questions list in the correct way")
     @Test
-    void shouldExecuteThreeTimes() {
+    void shouldPrintQuestionsListInTheCorrectWay() {
         doNothing().when(ioService).printLine(any());
 
         given(questionDao.findAll()).willReturn(List.of(
