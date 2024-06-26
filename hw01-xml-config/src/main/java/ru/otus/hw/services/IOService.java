@@ -1,7 +1,6 @@
 package ru.otus.hw.services;
 
 public interface IOService {
-    void printException(RuntimeException e);
 
     void printLine(String line);
 
