@@ -1,8 +1,11 @@
 package ru.otus.hw.services;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,6 +20,9 @@ import static org.mockito.BDDMockito.*;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests for TestService")
 public class TestServiceImplTest {
+    @Captor
+    ArgumentCaptor<String> message;
+
     @Mock
     private IOService ioService;
 
@@ -34,8 +40,9 @@ public class TestServiceImplTest {
     @DisplayName("Should print questions list in the correct way")
     @Test
     void shouldPrintQuestionsListInTheCorrectWay() {
-        doNothing().when(ioService).printLine(any());
+        String[] expectedPrintedMessages = new String[] {"", "Question1", "Question2"};
 
+        doNothing().when(ioService).printLine(message.capture());
         given(questionDao.findAll()).willReturn(List.of(
                 new Question("Question1", answersList),
                 new Question("Question2", answersList)
@@ -43,6 +50,6 @@ public class TestServiceImplTest {
 
         testService.executeTest();
 
-        verify(ioService, times(3)).printLine(any());
+        Assertions.assertArrayEquals(message.getAllValues().toArray(), expectedPrintedMessages);
     }
 }

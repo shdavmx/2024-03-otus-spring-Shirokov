@@ -18,9 +18,4 @@ public class StreamsIOService implements IOService {
     public void printFormattedLine(String line, Object ...args) {
         printStream.printf(line + "%n", args);
     }
-
-    public void printError(String error) {
-        String errorMessage = String.format("[Error] %s", error);
-        printStream.println(errorMessage);
-    }
 }

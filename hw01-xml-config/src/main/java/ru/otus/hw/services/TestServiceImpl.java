@@ -19,19 +19,27 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
         ioService.printFormattedLine("Please answer the questions below%n");
 
+        printQuestions();
+    }
+
+    private void printQuestions() {
         try {
             List<Question> questions = questionDao.findAll();
             for (Question question : questions) {
-                ioService.printLine(question.text());
-
-                int index = 0;
-                for (Answer answer : question.answers()) {
-                    index++;
-                    ioService.printFormattedLine("\t%d.%s", index, answer.text());
-                }
+                printQuestion(question);
             }
         } catch (QuestionReadException e) {
-            ioService.printError(e.getMessage());
+            ioService.printLine("[Error] Could not read questions from file");
+        }
+    }
+
+    private void printQuestion(Question question) {
+        ioService.printLine(question.text());
+
+        int index = 0;
+        for (Answer answer : question.answers()) {
+            index++;
+            ioService.printFormattedLine("\t%d.%s", index, answer.text());
         }
     }
 }
