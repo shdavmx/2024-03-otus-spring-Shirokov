@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.*;
 @DisplayName("Tests for TestService")
 public class TestServiceImplTest {
     @Captor
-    ArgumentCaptor<String> message;
+    private ArgumentCaptor<String> message;
 
     @Mock
     private IOService ioService;
