@@ -9,18 +9,18 @@ import java.util.Scanner;
 
 @Service
 public class StreamsIOService implements IOService {
-
-    @Value("${test.iostream.maxAttemptInputs}")
-    private int maxAttemptInputs;
+    private final int maxAttemptInputs;
 
     private final PrintStream printStream;
 
     private final Scanner scanner;
 
     public StreamsIOService(@Value("#{T(System).out}") PrintStream printStream,
-                            @Value("#{T(System).in}")InputStream inputStream) {
+                            @Value("#{T(System).in}")InputStream inputStream,
+                            @Value("${test.iostream.maxAttemptInputs}") int maxAttemptInputs) {
         this.printStream = printStream;
         this.scanner = new Scanner(inputStream);
+        this.maxAttemptInputs = maxAttemptInputs;
     }
 
     @Override

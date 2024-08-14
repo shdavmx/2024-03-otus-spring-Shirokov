@@ -23,15 +23,15 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
         ioService.printFormattedLine("Please answer the questions below%n");
 
-        return printQuestions(student);
+        return writeQuestions(student);
     }
 
-    private TestResult printQuestions(Student student) {
+    private TestResult writeQuestions(Student student) {
         TestResult testResult = new TestResult(student);
         try {
             List<Question> questions = questionDao.findAll();
             for (Question question : questions) {
-                printQuestion(question);
+                writeQuestion(question);
 
                 boolean isRightAnswer = readAnswers(question);
                 testResult.applyAnswer(question, isRightAnswer);
@@ -43,7 +43,7 @@ public class TestServiceImpl implements TestService {
         return testResult;
     }
 
-    private void printQuestion(Question question) {
+    private void writeQuestion(Question question) {
         ioService.printLine(question.text());
 
         int index = 0;
