@@ -2,6 +2,7 @@ package ru.otus.hw.services;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.otus.hw.config.TestConfig;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 
 @Service
 public class StreamsIOService implements IOService {
-    private final int maxAttemptInputs;
+    private final TestConfig testConfig;
 
     private final PrintStream printStream;
 
@@ -17,10 +18,10 @@ public class StreamsIOService implements IOService {
 
     public StreamsIOService(@Value("#{T(System).out}") PrintStream printStream,
                             @Value("#{T(System).in}")InputStream inputStream,
-                            @Value("${test.iostream.maxAttemptInputs}") int maxAttemptInputs) {
+                            TestConfig testConfig) {
         this.printStream = printStream;
         this.scanner = new Scanner(inputStream);
-        this.maxAttemptInputs = maxAttemptInputs;
+        this.testConfig = testConfig;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class StreamsIOService implements IOService {
 
     @Override
     public int readIntForRange(int min, int max, String errorMessage) {
-        for (int i = 0; i < maxAttemptInputs; i++) {
+        for (int i = 0; i < testConfig.getMaxAttemptsInputs(); i++) {
             try {
                 int intValue = readInt();
                 if (intValue < min || intValue > max) {
