@@ -23,27 +23,27 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
         ioService.printLineLocalized("TestService.answer.the.questions");
 
-        return writeQuestions(student);
+        return showQuestions(student);
     }
 
-    private TestResult writeQuestions(Student student) {
+    private TestResult showQuestions(Student student) {
         TestResult testResult = new TestResult(student);
         try {
             List<Question> questions = questionDao.findAll();
             for (Question question : questions) {
-                writeQuestion(question);
+                showQuestion(question);
 
                 boolean isRightAnswer = readAnswers(question);
                 testResult.applyAnswer(question, isRightAnswer);
             }
-        } catch (QuestionReadException e) {
-            ioService.printLineLocalized("TestService.error.read.questions");
+        } catch (QuestionReadException | IllegalArgumentException e) {
+            ioService.printLineLocalized(e.getMessage());
         }
 
         return testResult;
     }
 
-    private void writeQuestion(Question question) {
+    private void showQuestion(Question question) {
         ioService.printLine(question.text());
 
         int index = 0;

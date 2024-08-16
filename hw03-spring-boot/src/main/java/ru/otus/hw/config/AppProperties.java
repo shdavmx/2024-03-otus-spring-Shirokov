@@ -10,7 +10,7 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "test")
 @Data
 @Component
-public class AppProperties implements TestConfig, TestFileNameProvider, LocaleConfig, AppConfig {
+public class AppProperties implements TestConfig, TestFileNameProvider, LocaleConfig {
     private int maxAttemptsInputs;
 
     private int rightAnswersCountToPass;
