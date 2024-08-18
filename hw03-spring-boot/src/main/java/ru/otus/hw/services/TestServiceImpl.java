@@ -37,7 +37,8 @@ public class TestServiceImpl implements TestService {
                 testResult.applyAnswer(question, isRightAnswer);
             }
         } catch (QuestionReadException | IllegalArgumentException e) {
-            ioService.printLineLocalized(e.getMessage());
+            ioService.printLineLocalized(String.format("Could not read questions. Original message: %s",
+                    e.getMessage()));
         }
 
         return testResult;
