@@ -1,0 +1,25 @@
+application:
+  title: hw04-spring-shell
+  version: 1.0
+spring:
+  shell:
+    script:
+      enabled: true
+    interactive:
+      enabled: true
+  output:
+    ansi:
+      enabled: always
+  messages:
+    baseName: messages
+    encoding: UTF-8
+    # Не дает свалиться в системную локаль если не найден файл для переданной в MessageSource
+    # Если false то будут браться сообщения из дефолтного файла, если true, то из файла соответствующего системной локали
+    fallbackToSystemLocale: false
+test:
+  rightAnswersCountToPass: 3
+  maxAttemptsInputs: 4
+  locale: ru
+  fileNameByLocaleTag:
+    ru: questions_ru.csv
+    en: questions.csv
