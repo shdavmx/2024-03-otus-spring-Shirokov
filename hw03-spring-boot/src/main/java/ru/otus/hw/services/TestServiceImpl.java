@@ -23,28 +23,27 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
         ioService.printLineLocalized("TestService.answer.the.questions");
 
-        return showQuestions(student);
+        return askQuestions(student);
     }
 
-    private TestResult showQuestions(Student student) {
+    private TestResult askQuestions(Student student) {
         TestResult testResult = new TestResult(student);
         try {
             List<Question> questions = questionDao.findAll();
             for (Question question : questions) {
-                showQuestion(question);
+                askQuestion(question);
 
-                boolean isRightAnswer = readAnswers(question);
+                boolean isRightAnswer = readInputAnswers(question);
                 testResult.applyAnswer(question, isRightAnswer);
             }
         } catch (QuestionReadException | IllegalArgumentException e) {
-            ioService.printLineLocalized(String.format("Could not read questions. Original message: %s",
-                    e.getMessage()));
+            ioService.printLineLocalized(e.getMessage());
         }
 
         return testResult;
     }
 
-    private void showQuestion(Question question) {
+    private void askQuestion(Question question) {
         ioService.printLine(question.text());
 
         int index = 0;
@@ -54,12 +53,13 @@ public class TestServiceImpl implements TestService {
         }
     }
 
-    private boolean readAnswers(Question question) {
+    private boolean readInputAnswers(Question question) {
         int answerIndex = ioService.readIntForRangeWithPromptLocalized(1,
                 question.answers().size(),
                 "TestService.answer.the.question",
                 "TestService.error.read.answer");
 
-        return question.checkAnswer(answerIndex - 1);
+        Answer answer = question.answers().get(answerIndex - 1);
+        return answer.isCorrect();
     }
 }
