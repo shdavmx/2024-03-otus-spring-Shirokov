@@ -37,7 +37,8 @@ public class TestServiceImpl implements TestService {
                 testResult.applyAnswer(question, isRightAnswer);
             }
         } catch (QuestionReadException e) {
-            ioService.printLine(e.getMessage());
+            ioService.printLine(String.format("Could not read questions. Original message: %s",
+                    e.getMessage()));
         }
 
         return testResult;
@@ -56,7 +57,7 @@ public class TestServiceImpl implements TestService {
         int answerIndex = ioService.readIntForRangeWithPrompt(1,
                 question.answers().size(),
                 "Please enter your answer(s)",
-                "Something went wrong");
+                "Out of answers range");
 
         return question.checkAnswer(answerIndex - 1);
     }
