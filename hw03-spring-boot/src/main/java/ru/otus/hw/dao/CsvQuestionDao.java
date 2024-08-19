@@ -35,7 +35,7 @@ public class CsvQuestionDao implements QuestionDao {
             List<QuestionDto> questionDtoList = builder.parse();
             questions = toDomainObjects(questionDtoList);
         } catch (Exception e) {
-            throw  new QuestionReadException("CsvQuestionDao.error.read.questions", e);
+            throw  new QuestionReadException("Could not read questions", e);
         }
 
         return questions;
