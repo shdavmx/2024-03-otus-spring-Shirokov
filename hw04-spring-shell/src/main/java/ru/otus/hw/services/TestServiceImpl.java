@@ -36,8 +36,10 @@ public class TestServiceImpl implements TestService {
                 boolean isRightAnswer = readAnswers(question);
                 testResult.applyAnswer(question, isRightAnswer);
             }
-        } catch (QuestionReadException | IllegalArgumentException e) {
-            ioService.printLineLocalized(e.getMessage());
+        } catch (QuestionReadException ex) {
+            ioService.printLineLocalized("TestService.error.read.questions");
+        } catch (IllegalArgumentException ex) {
+            ioService.printLineLocalized("IOService.error.max.attempts.inputs");
         }
 
         return testResult;

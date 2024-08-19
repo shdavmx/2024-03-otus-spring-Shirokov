@@ -12,8 +12,7 @@ public class TestCommands {
     private final TestRunnerService testRunnerService;
 
     @ShellMethod(key = "test", value = "Test student")
-    public String runTest(@ShellOption String run) {
+    public void runTest(@ShellOption String run) {
         testRunnerService.run();
-        return "";
     }
 }
