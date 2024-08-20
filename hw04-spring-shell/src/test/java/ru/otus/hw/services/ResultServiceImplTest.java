@@ -19,7 +19,7 @@ import ru.otus.hw.domain.TestResult;
 import java.util.List;
 
 @DisplayName("Test for ResultService")
-@SpringBootTest(classes = {LocalizedIOService.class, TestConfig.class, ResultServiceImpl.class})
+@SpringBootTest(classes = {ResultServiceImpl.class})
 public class ResultServiceImplTest {
     @Captor
     private ArgumentCaptor<String> message;

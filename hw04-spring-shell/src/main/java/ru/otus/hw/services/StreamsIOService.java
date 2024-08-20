@@ -3,6 +3,7 @@ package ru.otus.hw.services;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.config.InputConfig;
+import ru.otus.hw.exceptions.MaxAttemptInputException;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -64,7 +65,7 @@ public class StreamsIOService implements IOService {
                 printLine(errorMessage);
             }
         }
-        throw new IllegalArgumentException("IOService.error.max.attempts.inputs");
+        throw new MaxAttemptInputException("Max input attempts has been reached");
     }
 
     @Override

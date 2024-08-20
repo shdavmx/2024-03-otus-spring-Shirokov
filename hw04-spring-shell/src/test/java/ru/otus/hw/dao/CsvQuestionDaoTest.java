@@ -15,7 +15,7 @@ import ru.otus.hw.domain.Question;
 import java.util.List;
 
 @DisplayName("Test for CsvQuestionDao")
-@SpringBootTest(classes = { TestFileNameProvider.class, CsvQuestionDao.class })
+@SpringBootTest(classes = { CsvQuestionDao.class })
 public class CsvQuestionDaoTest {
     @MockBean
     private TestFileNameProvider fileNameProvider;
