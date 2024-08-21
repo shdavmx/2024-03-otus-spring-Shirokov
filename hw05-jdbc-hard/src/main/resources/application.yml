@@ -1,0 +1,9 @@
+application:
+  title: hw05-spring-jdbc
+  version: 1.0
+spring:
+  shell:
+    script:
+      enabled: true
+    interactive:
+      enabled: true
