@@ -21,7 +21,7 @@ import java.util.*;
 @Repository
 @RequiredArgsConstructor
 public class JdbcBookRepository implements BookRepository {
-    private final NamedParameterJdbcOperations jdbc;
+    private final NamedParameterJdbcTemplate jdbc;
 
     private final GenreRepository genreRepository;
 
