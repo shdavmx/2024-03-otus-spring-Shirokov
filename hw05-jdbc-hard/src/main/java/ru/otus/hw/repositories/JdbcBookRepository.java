@@ -2,6 +2,7 @@ package ru.otus.hw.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.*;
@@ -109,14 +110,14 @@ public class JdbcBookRepository implements BookRepository {
             jdbc.update("update books " +
                     "set title = :title, author_id = :author_id " +
                     "where id = :book_id", sqlParams);
+
+            removeGenresRelationsFor(book);
+            batchInsertGenresRelationsFor(book);
+            return book;
         }
-        catch (DataAccessException e) {
+        catch (DataIntegrityViolationException e) {
             throw new EntityNotFoundException("Book with id %d not found".formatted(book.getId()));
         }
-
-        removeGenresRelationsFor(book);
-        batchInsertGenresRelationsFor(book);
-        return  book;
     }
 
     private void batchInsertGenresRelationsFor(Book book) {
@@ -200,10 +201,10 @@ public class JdbcBookRepository implements BookRepository {
                 }
             }
 
-            return books.get(books.keySet()
-                    .stream()
-                    .findFirst()
-                    .orElseThrow());
+            if(books.values().stream().findFirst().isPresent()) {
+                return books.values().stream().findFirst().get();
+            }
+            return null;
         }
     }
 
