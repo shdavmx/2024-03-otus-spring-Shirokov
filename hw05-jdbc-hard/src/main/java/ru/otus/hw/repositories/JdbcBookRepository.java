@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.*;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
@@ -61,12 +64,16 @@ public class JdbcBookRepository implements BookRepository {
 
     @Override
     public Book save(Book book) {
-        return null;
+        if(book.getId() == 0) {
+            return insert(book);
+        }
+        return update(book);
     }
 
     @Override
     public void deleteById(long id) {
-
+        Map<String, Object> params = Collections.singletonMap("book_id", id);
+        jdbc.update("delete from books where id = :book_id", params);
     }
 
     private List<Book> getAllBooksWithoutGenres() {
@@ -78,6 +85,53 @@ public class JdbcBookRepository implements BookRepository {
 
     private List<BookGenreRelation> getAllGenreRelations() {
         return jdbc.query("select book_id, genre_id from books_genres", new BookGenreRowMapper());
+    }
+
+    private Book insert(Book book) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        SqlParameterSource sqlParams = new MapSqlParameterSource()
+                .addValue("title",  book.getTitle())
+                .addValue("author_id", book.getAuthor().getId());
+        jdbc.update("insert into books(title, author_id) values(:title, :author_id)",
+                sqlParams, keyHolder);
+        book.setId(keyHolder.getKeyAs(Long.class));
+        batchInsertGenresRelationsFor(book);
+        return book;
+    }
+
+    private Book update(Book book) {
+        SqlParameterSource sqlParams = new MapSqlParameterSource()
+                .addValue("book_id", book.getId())
+                .addValue("title",  book.getTitle())
+                .addValue("author_id", book.getAuthor().getId());
+
+        try {
+            jdbc.update("update books " +
+                    "set title = :title, author_id = :author_id " +
+                    "where id = :book_id", sqlParams);
+        }
+        catch (DataAccessException e) {
+            throw new EntityNotFoundException("Book with id %d not found".formatted(book.getId()));
+        }
+
+        removeGenresRelationsFor(book);
+        batchInsertGenresRelationsFor(book);
+        return  book;
+    }
+
+    private void batchInsertGenresRelationsFor(Book book) {
+        List<BookGenreRelation> bookGenreRelations = new ArrayList<>();
+        for(Genre genre : book.getGenres()) {
+            bookGenreRelations.add(new BookGenreRelation(book.getId(), genre.getId()));
+        }
+        SqlParameterSource[] sqlParams = SqlParameterSourceUtils.createBatch(bookGenreRelations);
+
+        jdbc.batchUpdate("insert into books_genres(book_id, genre_id) values(:bookId, :genreId)", sqlParams);
+    }
+
+    private void removeGenresRelationsFor(Book book) {
+        Map<String, Object> params = Collections.singletonMap("book_id", book.getId());
+        jdbc.update("delete from books_genres where book_id = :book_id", params);
     }
 
     private static class BookRowMapper implements RowMapper<Book> {
