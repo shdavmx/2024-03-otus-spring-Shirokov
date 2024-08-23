@@ -2,7 +2,6 @@ package ru.otus.hw.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.*;
@@ -17,6 +16,7 @@ import ru.otus.hw.models.Genre;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,9 +32,9 @@ public class JdbcBookRepository implements BookRepository {
                 "                          a.id as author_id, a.full_name as author_full_name, " +
                 "                          g.id as genre_id, g.name as genre_name " +
                 "from books b " +
-                "join authors as a on b.author_id = a.id " +
-                "join books_genres as bg on b.id = bg.book_id " +
-                "join genres as g on bg.genre_id = g.id " +
+                "left join authors as a on b.author_id = a.id " +
+                "left join books_genres as bg on b.id = bg.book_id " +
+                "left join genres as g on bg.genre_id = g.id " +
                 "where b.id = :id", param, new BookResultSetExtractor());
 
         return Optional.ofNullable(book);
@@ -46,19 +46,7 @@ public class JdbcBookRepository implements BookRepository {
         List<BookGenreRelation> bookGenreRelations = getAllGenreRelations();
         List<Book> books = getAllBooksWithoutGenres();
 
-        for(Book book: books) {
-            List<Genre> bookGenres = new ArrayList<>();
-            for(BookGenreRelation relation: bookGenreRelations) {
-                if(relation.bookId == book.getId()) {
-                    Optional<Genre> genre = genres.stream()
-                            .filter(g -> g.getId() == relation.genreId)
-                            .findFirst();
-
-                    genre.ifPresent(bookGenres::add);
-                }
-            }
-            book.setGenres(bookGenres);
-        }
+        mergeBooksInfo(books, genres, bookGenreRelations);
 
         return books;
     }
@@ -75,6 +63,23 @@ public class JdbcBookRepository implements BookRepository {
     public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("book_id", id);
         jdbc.update("delete from books where id = :book_id", params);
+    }
+
+    private void mergeBooksInfo(List<Book> booksWithoutGenres, List<Genre> genres,
+                                List<BookGenreRelation> relations) {
+        Map<Long, List<BookGenreRelation>> mappedRelations = relations.stream()
+                .collect(Collectors.groupingBy(BookGenreRelation::bookId));
+        mappedRelations.forEach((k,v) -> {
+            Optional<Book> book = booksWithoutGenres.stream()
+                    .filter(b -> b.getId() == k)
+                    .findFirst();
+            if (book.isPresent()) {
+                List<Genre> bookGenres =
+                        genres.stream().filter(g -> v.stream().anyMatch(r -> r.genreId == g.getId()))
+                                .toList();
+                book.get().setGenres(bookGenres);
+            }
+        });
     }
 
     private List<Book> getAllBooksWithoutGenres() {
@@ -106,18 +111,16 @@ public class JdbcBookRepository implements BookRepository {
                 .addValue("title",  book.getTitle())
                 .addValue("author_id", book.getAuthor().getId());
 
-        try {
-            jdbc.update("update books " +
-                    "set title = :title, author_id = :author_id " +
-                    "where id = :book_id", sqlParams);
-
-            removeGenresRelationsFor(book);
-            batchInsertGenresRelationsFor(book);
-            return book;
-        }
-        catch (DataIntegrityViolationException e) {
+        int updatedEntities = jdbc.update("update books " +
+                "set title = :title, author_id = :author_id " +
+                "where id = :book_id", sqlParams);
+        if(updatedEntities == 0) {
             throw new EntityNotFoundException("Book with id %d not found".formatted(book.getId()));
         }
+
+        removeGenresRelationsFor(book);
+        batchInsertGenresRelationsFor(book);
+        return book;
     }
 
     private void batchInsertGenresRelationsFor(Book book) {
@@ -131,8 +134,8 @@ public class JdbcBookRepository implements BookRepository {
     }
 
     private void removeGenresRelationsFor(Book book) {
-        Map<String, Object> params = Collections.singletonMap("book_id", book.getId());
-        jdbc.update("delete from books_genres where book_id = :book_id", params);
+        Map<String, Object> mapBookId = Collections.singletonMap("book_id", book.getId());
+        jdbc.update("delete from books_genres where book_id = :book_id", mapBookId);
     }
 
     private static class BookRowMapper implements RowMapper<Book> {
