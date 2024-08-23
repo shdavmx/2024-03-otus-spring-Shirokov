@@ -170,27 +170,14 @@ public class JdbcBookRepository implements BookRepository {
         @Override
         public Book extractData(ResultSet rs) throws SQLException, DataAccessException {
             Map<Long, Book> books = new HashMap<>();
+            List<Genre> bookGenres = new ArrayList<>();
             while (rs.next()) {
-                Book book = new Book();
-
-                long genreId = rs.getLong("genre_id");
-                String genreName = rs.getString("genre_name");
-                Genre genre = new Genre(genreId, genreName);
-
                 long bookId = rs.getLong("book_id");
-                if(books.containsKey(bookId)) {
-                    book = books.get(bookId);
-                    List<Genre> genreList = book.getGenres();
-                    if(genreList == null) {
-                        book.setGenres(List.of(genre));
-                    }
-                    else {
-                        List<Genre> newGenreList = new ArrayList<>(genreList);
-                        newGenreList.add(genre);
-                        book.setGenres(newGenreList);
-                    }
-                }
-                else {
+                Book book = books.get(bookId);
+                if (book == null) {
+                    book = new Book();
+                    bookGenres = new ArrayList<>();
+
                     String title = rs.getString("title");
                     long authorId = rs.getLong("author_id");
                     String authorFullName = rs.getString("author_full_name");
@@ -198,10 +185,15 @@ public class JdbcBookRepository implements BookRepository {
                     book.setId(bookId);
                     book.setTitle(title);
                     book.setAuthor(new Author(authorId, authorFullName));
-                    book.setGenres(List.of(genre));
 
                     books.put(bookId, book);
                 }
+
+                long genreId = rs.getLong("genre_id");
+                String genreName = rs.getString("genre_name");
+                bookGenres.add(new Genre(genreId, genreName));
+
+                book.setGenres(bookGenres);
             }
 
             if(books.values().stream().findFirst().isPresent()) {
