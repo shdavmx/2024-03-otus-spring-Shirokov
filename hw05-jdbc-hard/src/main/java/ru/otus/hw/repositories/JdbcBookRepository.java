@@ -16,6 +16,7 @@ import ru.otus.hw.models.Genre;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Repository
@@ -67,17 +68,16 @@ public class JdbcBookRepository implements BookRepository {
 
     private void mergeBooksInfo(List<Book> booksWithoutGenres, List<Genre> genres,
                                 List<BookGenreRelation> relations) {
-        Map<Long, List<BookGenreRelation>> mappedRelations = relations.stream()
-                .collect(Collectors.groupingBy(BookGenreRelation::bookId));
-        mappedRelations.forEach((k,v) -> {
-            Optional<Book> book = booksWithoutGenres.stream()
-                    .filter(b -> b.getId() == k)
-                    .findFirst();
-            if (book.isPresent()) {
-                List<Genre> bookGenres =
-                        genres.stream().filter(g -> v.stream().anyMatch(r -> r.genreId == g.getId()))
-                                .toList();
-                book.get().setGenres(bookGenres);
+        Map<Long, Genre> mappedGenres = genres.stream()
+                .collect(Collectors.toMap(Genre::getId, Function.identity()));
+        Map<Long, Book> mappedBooks = booksWithoutGenres.stream()
+                .collect(Collectors.toMap(Book::getId, Function.identity()));
+        relations.forEach(r -> {
+            if (mappedBooks.containsKey(r.bookId) && mappedGenres.containsKey(r.genreId)) {
+                if(mappedBooks.get(r.bookId).getGenres() == null) {
+                    mappedBooks.get(r.bookId).setGenres(new ArrayList<>());
+                }
+                mappedBooks.get(r.bookId).getGenres().add(mappedGenres.get(r.genreId));
             }
         });
     }
