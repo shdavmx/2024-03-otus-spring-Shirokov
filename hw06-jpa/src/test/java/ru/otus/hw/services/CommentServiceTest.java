@@ -1,6 +1,5 @@
-package ru.otus.hw.models.services;
+package ru.otus.hw.services;
 
-import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,16 +7,17 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.models.Comment;
 import ru.otus.hw.repositories.CommentRepository;
 import ru.otus.hw.services.CommentServiceImpl;
 
-import java.util.List;
 import java.util.Optional;
 
 @DisplayName("Tests for CommentService")
 @SpringBootTest(classes = { CommentServiceImpl.class })
-@Transactional(Transactional.TxType.NOT_SUPPORTED)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class CommentServiceTest {
     private static final long TEST_COMMENT_ID = 1L;
 

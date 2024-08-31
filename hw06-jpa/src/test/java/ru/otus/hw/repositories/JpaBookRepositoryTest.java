@@ -1,4 +1,4 @@
-package ru.otus.hw.models.repositories;
+package ru.otus.hw.repositories;
 
 import org.assertj.core.api.Assertions;
 import org.hibernate.SessionFactory;

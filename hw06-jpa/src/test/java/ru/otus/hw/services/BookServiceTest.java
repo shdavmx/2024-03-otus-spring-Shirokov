@@ -1,6 +1,5 @@
-package ru.otus.hw.models.services;
+package ru.otus.hw.services;
 
-import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +10,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 
 @DisplayName("Tests for BookService")
 @SpringBootTest(classes = {BookServiceImpl.class})
-@Transactional(Transactional.TxType.NOT_SUPPORTED)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class BookServiceTest {
     private static final long TEST_BOOK_ID = 1L;
 

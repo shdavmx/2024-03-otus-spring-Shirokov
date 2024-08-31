@@ -25,6 +25,7 @@ public class Book {
     @ToString.Exclude
     private Author author;
 
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
