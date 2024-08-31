@@ -37,15 +37,24 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book insert(String title, Set<Long> authorIds, Set<Long> genresIds) {
-        return save(0, title, authorIds, genresIds, new ArrayList<>());
+    public Book insert(String title, long authorId, Set<Long> genresIds) {
+        return save(0, title, authorId, genresIds, new ArrayList<>());
     }
 
     @Transactional
     @Override
-    public Book update(long id, String title, Set<Long> authorIds, Set<Long> genresIds) {
-        List<Comment> comments = bookRepository.findCommentsByBookId(id);
-        return save(id, title, authorIds, genresIds, comments);
+    public Book update(long id, String title, long authorId, Set<Long> genresIds) {
+        List<Comment> comments = findCommentsByBookId(id);
+        return save(id, title, authorId, genresIds, comments);
+    }
+
+    @Override
+    public List<Comment> findCommentsByBookId(long id) {
+        Optional<Book> book = findById(id);
+        if (book.isPresent()) {
+            return book.get().getComments();
+        }
+        throw new EntityNotFoundException("Book with id %d not found".formatted(id));
     }
 
     @Transactional
@@ -54,21 +63,19 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
-    private Book save(long id, String title, Set<Long> authorIds, Set<Long> genresIds, List<Comment> comments) {
+    private Book save(long id, String title, long authorId, Set<Long> genresIds, List<Comment> comments) {
         if (genresIds.isEmpty()) {
             throw new IllegalArgumentException("Genres ids must not be null");
         }
 
-        List<Author> authors = authorRepository.findByIds(authorIds);
-        if (authors.isEmpty() || authorIds.size() != authors.size()) {
-            throw new EntityNotFoundException("One or all authors with ids %s not found".formatted(authorIds));
-        }
+        Author author = authorRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(authorId)));
         List<Genre> genres = genreRepository.findAllByIds(genresIds);
         if (genres.isEmpty() || genresIds.size() != genres.size()) {
             throw new EntityNotFoundException("One or all genres with ids %s not found".formatted(genresIds));
         }
 
-        Book book = new Book(id, title, authors, comments, genres);
+        Book book = new Book(id, title, author, comments, genres);
         return bookRepository.save(book);
     }
 }

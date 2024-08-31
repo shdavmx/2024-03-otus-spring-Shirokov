@@ -1,6 +1,5 @@
 package ru.otus.hw.commands;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -20,7 +19,6 @@ public class BookCommands {
 
     private final CommentConverter commentConverter;
 
-    @Transactional
     @ShellMethod(value = "Find all books", key = "ab")
     public String findAllBooks() {
         return bookService.findAll().stream()
@@ -28,7 +26,6 @@ public class BookCommands {
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
 
-    @Transactional
     @ShellMethod(value = "Find book by id", key = "bbid")
     public String findBookById(long id) {
         return bookService.findById(id)
@@ -36,27 +33,22 @@ public class BookCommands {
                 .orElse("Book with id %d not found".formatted(id));
     }
 
-    @Transactional
     @ShellMethod(value = "Find comments by book id", key = "cbid")
     public String findCommentsByBookId(long id) {
-        return bookService.findById(id)
-                .map(b -> b.getComments().stream()
-                        .map(commentConverter::commentToString)
-                        .collect(Collectors.joining("," + System.lineSeparator())))
-                .orElse("Comments for book %d not found".formatted(id));
+        return bookService.findCommentsByBookId(id).stream()
+                .map(commentConverter::commentToString)
+                .collect(Collectors.joining("," + System.lineSeparator()));
     }
 
-    @Transactional
     @ShellMethod(value = "Insert book", key = "bins")
-    public String insertBook(String title, Set<Long> authorIds, Set<Long> genresIds) {
-        var savedBook = bookService.insert(title, authorIds, genresIds);
+    public String insertBook(String title, long authorId, Set<Long> genresIds) {
+        var savedBook = bookService.insert(title, authorId, genresIds);
         return bookConverter.bookToString(savedBook);
     }
 
-    @Transactional
     @ShellMethod(value = "Update book", key = "bupd")
-    public String updateBook(long id, String title, Set<Long> authorIds, Set<Long> genresIds) {
-        var savedBook = bookService.update(id, title, authorIds, genresIds);
+    public String updateBook(long id, String title, long authorId, Set<Long> genresIds) {
+        var savedBook = bookService.update(id, title, authorId, genresIds);
         return bookConverter.bookToString(savedBook);
     }
 

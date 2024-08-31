@@ -26,15 +26,10 @@ public class BookConverter {
                 .map("{%s}"::formatted)
                 .collect(Collectors.joining(","));
 
-        String authorsString = book.getAuthors().stream()
-                .map(authorConverter::authorToString)
-                .map("{%s}"::formatted)
-                .collect(Collectors.joining(","));
-
-        return "Id: %d, title: %s, author: [%s], genres: [%s], comments: [%s]".formatted(
+        return "Id: %d, title: %s, author: {%s}, genres: [%s], comments: [%s]".formatted(
                 book.getId(),
                 book.getTitle(),
-                authorsString,
+                authorConverter.authorToString(book.getAuthor()),
                 genresString,
                 commentsString
         );

@@ -8,7 +8,6 @@ import ru.otus.hw.repositories.AuthorRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -25,10 +24,5 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<Author> findById(long id) {
         return authorRepository.findById(id);
-    }
-
-    @Override
-    public List<Author> findByIds(Set<Long> ids) {
-        return authorRepository.findByIds(ids);
     }
 }

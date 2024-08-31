@@ -12,3 +12,4 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    enable_lazy_load_no_trans: true

@@ -2,14 +2,12 @@ package ru.otus.hw.repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw.models.Author;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Repository
@@ -27,15 +25,5 @@ public class JpaAuthorRepository implements AuthorRepository {
     @Override
     public Optional<Author> findById(long id) {
         return Optional.ofNullable(entityManager.find(Author.class, id));
-    }
-
-    @Override
-    public List<Author> findByIds(Set<Long> ids) {
-        TypedQuery<Author> authorsQuery = entityManager
-                .createQuery("select a from Author a " +
-                                "where a.id in (:ids)", Author.class);
-        authorsQuery.setParameter("ids", ids);
-
-        return authorsQuery.getResultList();
     }
 }

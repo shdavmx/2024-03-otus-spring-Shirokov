@@ -5,9 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Book;
-import ru.otus.hw.models.Comment;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,17 +23,23 @@ public class JpaBookRepository implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        return entityManager.createQuery("select b from Book b ", Book.class)
+        List<Book> books = entityManager.createQuery("select b from Book b " +
+                "left join fetch b.genres ", Book.class)
                 .getResultList();
-    }
 
-    @Override
-    public List<Comment> findCommentsByBookId(long id) {
-        Optional<Book> book = findById(id);
-        if (book.isPresent()) {
-            return book.get().getComments();
-        }
-        throw new EntityNotFoundException("Book with id %d not found".formatted(id));
+        books = entityManager.createQuery("select b from Book b " +
+                        "right join fetch b.author a " +
+                        "where b in :books", Book.class)
+                .setParameter("books", books)
+                .getResultList();
+
+        books = entityManager.createQuery("select b from Book b " +
+                "left join fetch b.comments c " +
+                "where b in :books", Book.class)
+                .setParameter("books", books)
+                .getResultList();
+
+        return books;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class JpaBookRepository implements BookRepository {
     @Override
     public void deleteById(long id) {
         Query deleteBookQuery = entityManager
-                .createQuery("delete b from Book b where b.id = :id");
+                .createQuery("delete from Book b where b.id = :id");
         deleteBookQuery.setParameter("id", id);
         deleteBookQuery.executeUpdate();
     }

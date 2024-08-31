@@ -1,10 +1,7 @@
 package ru.otus.hw.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -23,10 +20,14 @@ public class Book {
     @Column(name = "title", nullable = false, unique = true)
     private String title;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private List<Author> authors;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Author author;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Comment> comments;
 
     @Fetch(FetchMode.SUBSELECT)
@@ -34,5 +35,6 @@ public class Book {
     @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_id"),
         inverseJoinColumns = @JoinColumn(name = "genre_id"))
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Genre> genres;
 }

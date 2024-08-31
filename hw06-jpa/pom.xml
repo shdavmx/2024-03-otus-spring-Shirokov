@@ -27,6 +27,7 @@
             https://raw.githubusercontent.com/OtusTeam/Spring/master/checkstyle.xml
         </checkstyle.config.url>
         <maven-plagin.version>3.2.7</maven-plagin.version>
+        <reflections.version>0.10.2</reflections.version>
         <start-class>ru.otus.hw.Main</start-class>
     </properties>
 
@@ -57,6 +58,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${reflections.version}</version>
         </dependency>
     </dependencies>
 
