@@ -48,10 +48,9 @@ public class TestServiceImpl implements TestService {
     private void askQuestion(Question question) {
         ioService.printLine(question.text());
 
-        int index = 0;
-        for (Answer answer : question.answers()) {
-            index++;
-            ioService.printFormattedLine("\t%d.%s", index, answer.text());
+        for (int index = 0; index < question.answers().size(); index++) {
+            Answer answer = question.answers().get(index);
+            ioService.printFormattedLine("\t%d.%s", index + 1, answer.text());
         }
     }
 
