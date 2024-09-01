@@ -20,8 +20,9 @@ create table genres (
 create table comments (
     id bigserial,
     comment varchar(max),
-    book_id bigint references books (id) on delete cascade,
-    primary key (id)
+    book_id bigint,
+    primary key (id),
+    foreign key (book_id) references books(id) on delete cascade
 );
 
 create table books_genres (

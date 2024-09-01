@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
-import ru.otus.hw.repositories.JpaBookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class JpaBookRepositoryTest {
 
     private static final int EXPECTED_BOOK_SIZE = 3;
 
-    private static final int EXPECTED_QUERY_COUNT = 3;
+    private static final int EXPECTED_QUERY_COUNT = 1;
 
     @Autowired
     private JpaBookRepository jpaBookRepository;
@@ -57,7 +56,6 @@ public class JpaBookRepositoryTest {
                 .allMatch(b -> b.getId() > 0)
                 .allMatch(b -> !b.getTitle().isEmpty())
                 .allMatch(b -> b.getAuthor() != null)
-                .allMatch(b -> b.getComments() != null && !b.getComments().isEmpty())
                 .allMatch(b -> b.getGenres() != null && !b.getGenres().isEmpty());
 
         Assertions.assertThat(sessionFactory.getStatistics().getPrepareStatementCount())
@@ -71,7 +69,7 @@ public class JpaBookRepositoryTest {
         testAuthor.setId(0);
         testAuthor.setFullName("test");
         Book newBook = new Book(0, "testTile",
-                testAuthor, new ArrayList<>(), new ArrayList<>());
+                testAuthor, new ArrayList<>());
 
         Book savedBook = jpaBookRepository.save(newBook);
         Assertions.assertThat(savedBook.getId()).isGreaterThan(0);

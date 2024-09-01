@@ -2,8 +2,6 @@ package ru.otus.hw.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Data
 @AllArgsConstructor
@@ -19,8 +17,6 @@ public class Comment {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", unique = true)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
     private Book book;
 }

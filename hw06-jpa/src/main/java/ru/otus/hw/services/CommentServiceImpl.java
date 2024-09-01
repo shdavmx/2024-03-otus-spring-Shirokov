@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.hw.models.Comment;
 import ru.otus.hw.repositories.CommentRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -17,5 +18,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Optional<Comment> findById(long id) {
         return commentRepository.findById(id);
+    }
+
+    @Override
+    public List<Comment> findCommentsByBookId(long id) {
+        return commentRepository.findCommentsByBookId(id);
     }
 }
