@@ -1,7 +1,24 @@
 package ru.otus.hw.models;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.CascadeType;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 

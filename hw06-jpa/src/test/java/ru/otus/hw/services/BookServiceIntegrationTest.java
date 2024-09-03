@@ -11,9 +11,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.exceptions.EntityNotFoundException;
-import ru.otus.hw.models.Author;
-import ru.otus.hw.models.Genre;
+import ru.otus.hw.models.dto.AuthorDto;
 import ru.otus.hw.models.dto.BookDto;
+import ru.otus.hw.models.dto.GenreDto;
 import ru.otus.hw.repositories.JpaAuthorRepository;
 import ru.otus.hw.repositories.JpaBookRepository;
 import ru.otus.hw.repositories.JpaGenreRepository;
@@ -37,17 +37,17 @@ public class BookServiceIntegrationTest {
 
     private final List<BookDto> testBooks = List.of(
             new BookDto(1, "BookTitle_1",
-                    new Author(1, "Author_1"),
+                    new AuthorDto(1, "Author_1"),
                     List.of(
-                            new Genre(1, "Genre_1"),
-                            new Genre(2, "Genre_2")
+                            new GenreDto(1, "Genre_1"),
+                            new GenreDto(2, "Genre_2")
                     )
             ),
             new BookDto(2, "BookTitle_2",
-                    new Author(2, "Author_2"),
+                    new AuthorDto(2, "Author_2"),
                     List.of(
-                            new Genre(3, "Genre_3"),
-                            new Genre(4, "Genre_4")
+                            new GenreDto(3, "Genre_3"),
+                            new GenreDto(4, "Genre_4")
                     )
             )
     );
@@ -85,10 +85,10 @@ public class BookServiceIntegrationTest {
     public void shouldInsertNewBook() {
         BookDto expectedBook = new BookDto(
                 4, "new book",
-                new Author(1, "Author_1"),
+                new AuthorDto(1, "Author_1"),
                 List.of(
-                        new Genre(1, "Genre_1"),
-                        new Genre(2, "Genre_2"))
+                        new GenreDto(1, "Genre_1"),
+                        new GenreDto(2, "Genre_2"))
         );
         BookDto actualBook = bookService.insert(expectedBook.getTitle(), 1, Set.of(1L, 2L));
 
@@ -102,10 +102,10 @@ public class BookServiceIntegrationTest {
     public void shouldUpdateExistingBook() {
         BookDto expectedBook = new BookDto(
                 1, "new book",
-                new Author(1, "Author_1"),
+                new AuthorDto(1, "Author_1"),
                 List.of(
-                        new Genre(1, "Genre_1"),
-                        new Genre(2, "Genre_2"))
+                        new GenreDto(1, "Genre_1"),
+                        new GenreDto(2, "Genre_2"))
         );
         BookDto actualBook = bookService
                 .update(expectedBook.getId(), expectedBook.getTitle(), 1, Set.of(1L, 2L));

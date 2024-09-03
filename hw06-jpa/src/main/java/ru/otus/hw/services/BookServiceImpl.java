@@ -13,7 +13,9 @@ import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
-import java.util.*;
+import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto findById(long id) {
         Optional<Book> book = bookRepository.findById(id);
-        if(book.isPresent()) {
+        if (book.isPresent()) {
             return BookToDtoConverter.toDto(book.get());
         }
         throw new EntityNotFoundException("Book with id %d not found".formatted(id));

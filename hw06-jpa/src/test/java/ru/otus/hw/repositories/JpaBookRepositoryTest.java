@@ -25,7 +25,7 @@ public class JpaBookRepositoryTest {
 
     private static final int EXPECTED_BOOK_SIZE = 3;
 
-    private static final int EXPECTED_QUERY_COUNT = 1;
+    private static final int EXPECTED_QUERY_COUNT = 2;
 
     @Autowired
     private JpaBookRepository jpaBookRepository;
