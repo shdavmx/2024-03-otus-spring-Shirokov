@@ -1,6 +1,5 @@
 package ru.otus.hw.services;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.models.Comment;
@@ -14,7 +13,6 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
-    @Transactional
     @Override
     public Optional<Comment> findById(long id) {
         return commentRepository.findById(id);

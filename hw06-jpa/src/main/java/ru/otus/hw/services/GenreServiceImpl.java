@@ -1,6 +1,5 @@
 package ru.otus.hw.services;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.converters.GenreToDtoConverter;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
 
-    @Transactional
     @Override
     public List<GenreDto> findAll() {
         return genreRepository.findAll().stream()
@@ -24,7 +22,6 @@ public class GenreServiceImpl implements GenreService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public List<GenreDto> findAllByIds(Set<Long> ids) {
         return genreRepository.findAllByIds(ids).stream()
