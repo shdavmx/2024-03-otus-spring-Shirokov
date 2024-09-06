@@ -28,4 +28,19 @@ public class CommentCommands {
                 .map(commentConverter::commentToString)
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
+
+    @ShellMethod(value = "Insert new comment", key = "cins")
+    public String insertNewComment(String comment, long bookId) {
+        return commentConverter.commentToString(commentService.insert(comment, bookId));
+    }
+
+    @ShellMethod(value = "Update comment", key = "cupd")
+    public String updateComment(long id, String comment, long bookId) {
+        return commentConverter.commentToString(commentService.update(id, comment, bookId));
+    }
+
+    @ShellMethod(value = "Delete comment", key = "cdel")
+    public void deleteComment(long id) {
+        commentService.deleteById(id);
+    }
 }
