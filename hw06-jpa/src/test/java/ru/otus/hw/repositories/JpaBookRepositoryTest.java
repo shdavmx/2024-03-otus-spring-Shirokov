@@ -36,10 +36,10 @@ public class JpaBookRepositoryTest {
     @DisplayName("should find expected book id")
     @Test
     public void shouldFindExpectedBookById() {
-        Optional<Book> actualBook = jpaBookRepository.findById(TEST_BOOK_ID);
+        Book actualBook = jpaBookRepository.findById(TEST_BOOK_ID);
         Book expectedBook = testEntityManager.find(Book.class, TEST_BOOK_ID);
 
-        Assertions.assertThat(actualBook).isPresent().get()
+        Assertions.assertThat(actualBook).isNotNull()
                 .usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
@@ -83,12 +83,9 @@ public class JpaBookRepositoryTest {
     @DisplayName("should update existing book")
     @Test
     public void shouldUpdateExistingBook() {
-        Optional<Book> findBook = jpaBookRepository.findById(TEST_BOOK_ID);
-        Assertions.assertThat(findBook).isPresent().get().isNotNull();
-
-        Book updateBook = findBook.get();
-        updateBook.setTitle(TEST_BOOK_TITLE);
-        Book actualBook = jpaBookRepository.save(updateBook);
+        Book findBook = jpaBookRepository.findById(TEST_BOOK_ID);
+        findBook.setTitle(TEST_BOOK_TITLE);
+        Book actualBook = jpaBookRepository.save(findBook);
 
         Assertions.assertThat(actualBook.getTitle()).isEqualTo(TEST_BOOK_TITLE);
     }

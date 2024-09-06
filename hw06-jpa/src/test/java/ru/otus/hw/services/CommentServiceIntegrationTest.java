@@ -6,9 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.hw.exceptions.EntityNotFoundException;
+import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
+import ru.otus.hw.repositories.JpaBookRepository;
 import ru.otus.hw.repositories.JpaCommentRepository;
 
 import java.util.List;
@@ -17,8 +21,7 @@ import java.util.Optional;
 
 @DisplayName("Integration tests for CommentService")
 @DataJpaTest
-@Import({JpaCommentRepository.class, CommentServiceImpl.class})
-@Transactional(propagation = Propagation.NEVER)
+@Import({JpaCommentRepository.class, CommentServiceImpl.class, JpaBookRepository.class})
 public class CommentServiceIntegrationTest {
     private static final long TEST_BOOK_ID = 1L;
 
@@ -34,6 +37,7 @@ public class CommentServiceIntegrationTest {
     @Autowired
     private CommentServiceImpl commentService;
 
+    @Transactional(propagation = Propagation.NEVER)
     @DisplayName("should find comment by id")
     @Test
     public void shouldFindCommentById() {
@@ -46,13 +50,47 @@ public class CommentServiceIntegrationTest {
                 .matches(c -> Objects.equals(c.getComment(), expectedComment.getComment()));
     }
 
+    @Transactional(propagation = Propagation.NEVER)
     @DisplayName("should find comments by book id")
     @Test
     public void shouldFindCommentsByBookId() {
-        List<Comment> actualComments = commentService.findCommentsByBookId(TEST_BOOK_ID);
+        List<Comment> actualComments = commentService.findByBookId(TEST_BOOK_ID);
 
         Assertions.assertThat(actualComments).isNotNull().hasSize(TEST_COMMENTS_BOOK_SIZE)
                 .allMatch(c -> c.getId() > 0)
                 .allMatch(c -> !c.getComment().isEmpty());
+    }
+
+    @Rollback
+    @DisplayName("should insert new comment")
+    @Test
+    public void shouldInsertNewComment() {
+        Comment actualComment = commentService.insert("newComment", TEST_BOOK_ID);
+
+        Assertions.assertThat(actualComment).isNotNull()
+                .matches(c -> c.getId() > 0)
+                .matches(c -> c.getComment().equals("newComment"));
+    }
+
+    @Rollback
+    @DisplayName("should update existing comment")
+    @Test
+    public void shouldUpdateExistingComment() {
+        Comment actualComment = commentService.update(TEST_COMMENT_ID, "updatedComment", TEST_BOOK_ID);
+
+        Assertions.assertThat(actualComment).isNotNull()
+                .matches(c -> c.getId() == TEST_COMMENT_ID)
+                .matches(c -> c.getComment().equals("updatedComment"));
+    }
+
+    @Rollback
+    @DisplayName("should delete comment by id")
+    @Test
+    public void shouldDeleteCommentById() {
+        commentService.deleteById(TEST_COMMENT_ID);
+
+        Optional<Comment> actualComment = commentService.findById(TEST_COMMENT_ID);
+
+        Assertions.assertThat(actualComment.isPresent()).isFalse();
     }
 }
