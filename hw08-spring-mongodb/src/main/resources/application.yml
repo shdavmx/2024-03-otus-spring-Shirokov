@@ -1,0 +1,14 @@
+application:
+  title: hw06-jpa
+  version: 1.0
+spring:
+  shell:
+    script:
+      enabled: true
+    interactive:
+      enabled: true
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: local
