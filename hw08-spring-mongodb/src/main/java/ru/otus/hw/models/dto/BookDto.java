@@ -2,15 +2,17 @@ package ru.otus.hw.models.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+import java.util.List;
+
 @AllArgsConstructor
 @Data
-public class CommentDto {
+public class BookDto {
     private String id;
 
-    private String comment;
+    private String title;
 
-    private BookDto book;
+    private AuthorDto author;
+
+    private List<GenreDto> genres;
 }

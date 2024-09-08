@@ -9,6 +9,7 @@ import ru.otus.hw.models.dto.AuthorDto;
 import ru.otus.hw.repositories.AuthorRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -26,12 +27,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto findByName(String fullName) {
-        Author author = authorRepository.findByFullName(fullName);
-        if (author != null) {
-            return authorConverter.toDto(author);
+    public AuthorDto findById(String id) {
+        Optional<Author> author = authorRepository.findById(id);
+        if (author.isPresent()) {
+            return authorConverter.toDto(author.get());
         }
-        throw new EntityNotFoundException("Author '%s' not found".formatted(fullName));
+        throw new EntityNotFoundException("Author '%s' not found".formatted(id));
     }
 
     @Override
@@ -40,17 +41,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto update(String oldFullName, String newFullName) {
-        AuthorDto authorDto = findByName(oldFullName);
-        authorDto.setFullName(newFullName);
-        Author author = authorConverter.toDbEntry(authorDto);
-
-        return authorConverter.toDto(authorRepository.save(author));
+    public AuthorDto update(String id, String name) {
+        return authorConverter.toDto(authorRepository.save(new Author(id, name)));
     }
 
     @Override
-    public void deleteByFullName(String fullName) {
-        AuthorDto authorDto = findByName(fullName);
+    public void deleteById(String id) {
+        AuthorDto authorDto = findById(id);
         Author author = authorConverter.toDbEntry(authorDto);
 
         authorRepository.delete(author);

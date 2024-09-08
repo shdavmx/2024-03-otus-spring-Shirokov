@@ -9,7 +9,8 @@ import ru.otus.hw.models.dto.GenreDto;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -19,19 +20,26 @@ public class GenreServiceImpl implements GenreService {
     private final GenreConverter genreConverter;
 
     @Override
-    public GenreDto findByName(String name) {
-        Genre genre = genreRepository.findByName(name);
-        if (genre != null) {
-            return genreConverter.toDto(genre);
+    public GenreDto findById(String id) {
+        Optional<Genre> genre = genreRepository.findById(id);
+        if (genre.isPresent()) {
+            return genreConverter.toDto(genre.get());
         }
-        throw new EntityNotFoundException("Genre '%s' not found".formatted(name));
+        throw new EntityNotFoundException("Genre '%s' not found".formatted(id));
+    }
+
+    @Override
+    public List<GenreDto> findAllByIds(Set<String> ids) {
+        return genreRepository.findAllById(ids).stream()
+                .map(genreConverter::toDto)
+                .toList();
     }
 
     @Override
     public List<GenreDto> findAll() {
         return genreRepository.findAll().stream()
                 .map(genreConverter::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -40,17 +48,13 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreDto update(String oldName, String newName) {
-        GenreDto genreDto = findByName(oldName);
-        genreDto.setName(newName);
-        Genre genre = genreConverter.toDbEntry(genreDto);
-
-        return genreConverter.toDto(genreRepository.save(genre));
+    public GenreDto update(String id, String name) {
+        return genreConverter.toDto(genreRepository.save(new Genre(id, name)));
     }
 
     @Override
-    public void deleteByName(String name) {
-        GenreDto genreDto = findByName(name);
+    public void deleteById(String id) {
+        GenreDto genreDto = findById(id);
         Genre genre = genreConverter.toDbEntry(genreDto);
 
         genreRepository.delete(genre);

@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,5 +19,9 @@ public class Book {
 
     private String title;
 
+    @DBRef(lazy = true)
+    private Author author;
 
+    @DBRef(lazy = true)
+    private List<Genre> genres;
 }

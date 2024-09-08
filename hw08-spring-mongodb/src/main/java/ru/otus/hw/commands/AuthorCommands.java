@@ -22,9 +22,9 @@ public class AuthorCommands {
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
 
-    @ShellMethod(value = "Find author by name", key = "abn")
-    public String findAuthorByName(String fullName) {
-        return authorConverter.authorToString(authorService.findByName(fullName));
+    @ShellMethod(value = "Find author by id", key = "abid")
+    public String findAuthorByName(String id) {
+        return authorConverter.authorToString(authorService.findById(id));
     }
 
     @ShellMethod(value = "Insert new author", key = "ains")
@@ -33,12 +33,12 @@ public class AuthorCommands {
     }
 
     @ShellMethod(value = "Update author", key = "aupd")
-    public String updateAuthor(String oldName, String newName) {
-        return authorConverter.authorToString(authorService.update(oldName, newName));
+    public String updateAuthor(String id, String name) {
+        return authorConverter.authorToString(authorService.update(id, name));
     }
 
-    @ShellMethod(value = "Delete author by name", key = "adel")
-    public void deleteAuthorByName(String fullName) {
-        authorService.deleteByFullName(fullName);
+    @ShellMethod(value = "Delete author by id", key = "adel")
+    public void deleteAuthorByName(String id) {
+        authorService.deleteById(id);
     }
 }

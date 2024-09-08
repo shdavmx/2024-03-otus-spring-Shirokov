@@ -1,7 +1,3 @@
-application:
-  title: hw08-data-mongodb
-  version: 1.0
-
 spring:
   shell:
     script:
@@ -12,10 +8,10 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: local
+      database: test
 
 mongock:
-  runner-type: "InitializingBean"
+  #runner-type: "InitializingBean"
   change-logs-scan-package:
     - ru.otus.hw.mongock.changelog
   mongo-db:

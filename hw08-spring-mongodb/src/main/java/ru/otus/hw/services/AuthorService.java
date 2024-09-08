@@ -7,11 +7,11 @@ import java.util.List;
 public interface AuthorService {
     List<AuthorDto> findAll();
 
-    AuthorDto findByName(String fullName);
+    AuthorDto findById(String id);
 
     AuthorDto insert(String fullName);
 
-    AuthorDto update(String oldFullName, String newFullName);
+    AuthorDto update(String id, String fullName);
 
-    void deleteByFullName(String fullName);
+    void deleteById(String id);
 }
