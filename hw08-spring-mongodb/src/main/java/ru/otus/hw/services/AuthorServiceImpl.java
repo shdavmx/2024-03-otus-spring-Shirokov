@@ -55,6 +55,6 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         authorRepository.deleteById(id);
-        bookRepository.findAllByAuthorId(id);
+        bookRepository.deleteAllByAuthorId(id);
     }
 }
