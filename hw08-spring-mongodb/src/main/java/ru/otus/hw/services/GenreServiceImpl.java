@@ -6,6 +6,7 @@ import ru.otus.hw.converters.GenreConverter;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Genre;
 import ru.otus.hw.models.dto.GenreDto;
+import ru.otus.hw.repositories.BookRepositoryCustom;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
 
     private final GenreConverter genreConverter;
+
+    private final BookRepositoryCustom bookRepositoryCustom;
 
     @Override
     public GenreDto findById(String id) {
@@ -54,9 +57,11 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public void deleteById(String id) {
-        GenreDto genreDto = findById(id);
-        Genre genre = genreConverter.toDbEntry(genreDto);
+        if (!genreRepository.existsById(id)) {
+            throw new EntityNotFoundException("Genre with id '%s' not found".formatted(id));
+        }
 
-        genreRepository.delete(genre);
+        genreRepository.deleteById(id);
+        bookRepositoryCustom.removeGenreArrayElementsById(id);
     }
 }

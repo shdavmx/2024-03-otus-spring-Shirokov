@@ -50,6 +50,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteById(String id) {
+        if (!commentRepository.existsById(id)) {
+            throw new EntityNotFoundException("Comment with id '%s' not found".formatted(id));
+        }
+
         commentRepository.deleteById(id);
     }
 

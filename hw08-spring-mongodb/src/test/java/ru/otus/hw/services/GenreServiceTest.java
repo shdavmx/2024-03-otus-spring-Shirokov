@@ -11,12 +11,13 @@ import org.springframework.test.annotation.Rollback;
 import ru.otus.hw.converters.GenreConverter;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.dto.GenreDto;
+import ru.otus.hw.repositories.BookRepositoryCustomImpl;
 
 import java.util.List;
 
 @DisplayName("Integration tests for GenreService")
 @DataMongoTest
-@Import({GenreServiceImpl.class, GenreConverter.class})
+@Import({GenreServiceImpl.class, GenreConverter.class, BookRepositoryCustomImpl.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class GenreServiceTest {
     private static final String GENRE_TEST_ID = "1";
