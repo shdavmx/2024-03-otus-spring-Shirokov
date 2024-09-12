@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
     public BookDto findById(String id) {
         Optional<Book> book = bookRepository.findById(id);
         if (book.isPresent()) {
-            return new BookDto(book.get());
+            return BookDto.fromDomainObject(book.get());
         }
         throw new EntityNotFoundException("Book with id '%s' not found".formatted(id));
     }
@@ -39,14 +39,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> findAll() {
         return bookRepository.findAll().stream()
-                .map(BookDto::new)
+                .map(BookDto::fromDomainObject)
                 .toList();
     }
 
     @Override
     public List<BookDto> findAllByAuthorId(String authorId) {
         return bookRepository.findAllByAuthorId(authorId).stream()
-                .map(BookDto::new)
+                .map(BookDto::fromDomainObject)
                 .toList();
     }
 
@@ -83,6 +83,6 @@ public class BookServiceImpl implements BookService {
         }
 
         Book book = new Book(id, title, author, genres);
-        return new BookDto(bookRepository.save(book));
+        return BookDto.fromDomainObject(bookRepository.save(book));
     }
 }

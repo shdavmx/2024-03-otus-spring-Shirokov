@@ -1,19 +1,21 @@
 package ru.otus.hw.models.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import ru.otus.hw.models.Author;
 
-@AllArgsConstructor
 @Data
 public class AuthorDto {
     private String id;
 
+    @NotBlank(message = "Name can not be empty")
+    @Size(min = 2, max = 20, message = "Invalid name size. Expected size from 2 to 20")
     private String fullName;
 
-    public AuthorDto(Author author) {
-        this.id = author.getId();
-        this.fullName = author.getFullName();
+    public AuthorDto(String id, String fullName) {
+        this.id = id;
+        this.fullName = fullName;
     }
 
     @Override
@@ -23,5 +25,9 @@ public class AuthorDto {
 
     public Author toDomainObject() {
         return new Author(id, fullName);
+    }
+
+    public static AuthorDto fromDomainObject(Author author) {
+        return new AuthorDto(author.getId(), author.getFullName());
     }
 }

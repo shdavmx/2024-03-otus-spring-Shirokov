@@ -1,9 +1,10 @@
 package ru.otus.hw.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw.models.dto.AuthorDto;
 import ru.otus.hw.services.AuthorService;
@@ -23,8 +24,25 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/delete")
-    public String deleteGenreById(@RequestParam("id") String id) {
+    public String deleteAuthorById(@RequestParam("id") String id) {
         authorService.deleteById(id);
+        return "redirect:/authors";
+    }
+
+    @GetMapping("/authors/edit")
+    public String getEditAuthor(@RequestParam("id") String id, Model model) {
+        AuthorDto author = authorService.findById(id);
+        model.addAttribute("author", author);
+        return "author-edit";
+    }
+
+    @PostMapping("/authors/edit")
+    public String saveAuthor(@Valid AuthorDto author, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "author-edit";
+        }
+
+        authorService.update(author.getId(), author.getFullName());
         return "redirect:/authors";
     }
 }

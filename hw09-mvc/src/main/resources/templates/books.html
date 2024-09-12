@@ -55,15 +55,15 @@
       <td th:text="${book.id}">Id</td>
       <td th:text="${book.title}">Title</td>
       <td>
-        <a th:href="@{/author-edit(id=${book.author.id})}"
+        <a th:href="@{/authors/edit(id=${book.author.id})}"
            href="author-edit.html"
            th:text="${book.author.fullName}">Author</a>
       </td>
       <td th:text="${book.genresString()}">Genres</td>
       <td>
-        <a th:href="@{/book-edit(id=${book.id})}"
+        <a th:href="@{/books/edit(id=${book.id})}"
            href="book-edit.html">Edit</a>
-        <a th:href="@{/delete(id=${book.id})}"
+        <a th:href="@{/books/delete(id=${book.id})}"
            href="books.html">Delete</a>
       </td>
     </tr>

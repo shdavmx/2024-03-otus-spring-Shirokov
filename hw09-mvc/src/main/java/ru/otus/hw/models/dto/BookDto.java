@@ -18,13 +18,6 @@ public class BookDto {
 
     private List<GenreDto> genres;
 
-    public BookDto(Book book) {
-        this.id = book.getId();
-        this.title = book.getTitle();
-        this.author = new AuthorDto(book.getAuthor());
-        this.genres = book.getGenres().stream().map(GenreDto::new).toList();
-    }
-
     @Override
     public String toString() {
         String genreString = genres.stream()
@@ -46,5 +39,11 @@ public class BookDto {
         return genres.stream()
                 .map(GenreDto::getName)
                 .collect(Collectors.joining(","));
+    }
+
+    public static BookDto fromDomainObject(Book book) {
+        return new BookDto(book.getId(), book.getTitle(),
+                AuthorDto.fromDomainObject(book.getAuthor()),
+                book.getGenres().stream().map(GenreDto::fromDomainObject).toList());
     }
 }

@@ -53,7 +53,7 @@
       <td th:text="${author.id}">Id</td>
       <td th:text="${author.fullName}">Full Name</td>
       <td>
-        <a th:href="@{/authors/author-edit(id=${author.id})}"
+        <a th:href="@{/authors/edit(id=${author.id})}"
            href="author-edit.html">Edit</a>
         <a th:href="@{/authors/delete(id=${author.id})}"
            href="authors.html">Delete</a>

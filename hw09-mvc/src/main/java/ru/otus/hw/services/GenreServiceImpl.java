@@ -23,7 +23,7 @@ public class GenreServiceImpl implements GenreService {
     public GenreDto findById(String id) {
         Optional<Genre> genre = genreRepository.findById(id);
         if (genre.isPresent()) {
-            return new GenreDto(genre.get());
+            return GenreDto.fromDomainObject(genre.get());
         }
         throw new EntityNotFoundException("Genre '%s' not found".formatted(id));
     }
@@ -31,25 +31,25 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public List<GenreDto> findAllByIds(Set<String> ids) {
         return genreRepository.findAllById(ids).stream()
-                .map(GenreDto::new)
+                .map(GenreDto::fromDomainObject)
                 .toList();
     }
 
     @Override
     public List<GenreDto> findAll() {
         return genreRepository.findAll().stream()
-                .map(GenreDto::new)
+                .map(GenreDto::fromDomainObject)
                 .toList();
     }
 
     @Override
     public GenreDto insert(String name) {
-        return new GenreDto(genreRepository.insert(new Genre(name)));
+        return GenreDto.fromDomainObject(genreRepository.insert(new Genre(name)));
     }
 
     @Override
     public GenreDto update(String id, String name) {
-        return new GenreDto(genreRepository.save(new Genre(id, name)));
+        return GenreDto.fromDomainObject(genreRepository.save(new Genre(id, name)));
     }
 
     @Override

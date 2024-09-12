@@ -12,11 +12,6 @@ public class GenreDto {
 
     private String name;
 
-    public GenreDto(Genre genre) {
-        this.id = genre.getId();
-        this.name = genre.getName();
-    }
-
     @Override
     public String toString() {
         return "Id: %s, Name: %s".formatted(id, name);
@@ -24,5 +19,9 @@ public class GenreDto {
 
     public Genre toDomainObject() {
         return new Genre(id, name);
+    }
+
+    public static GenreDto fromDomainObject(Genre genre) {
+        return new GenreDto(genre.getId(), genre.getName());
     }
 }

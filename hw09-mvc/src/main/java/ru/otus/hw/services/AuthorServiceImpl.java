@@ -22,7 +22,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorDto> findAll() {
         return authorRepository.findAll().stream()
-                .map(AuthorDto::new)
+                .map(AuthorDto::fromDomainObject)
                 .collect(Collectors.toList());
     }
 
@@ -30,19 +30,19 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorDto findById(String id) {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
-            return new AuthorDto(author.get());
+            return AuthorDto.fromDomainObject(author.get());
         }
         throw new EntityNotFoundException("Author '%s' not found".formatted(id));
     }
 
     @Override
     public AuthorDto insert(String fullName) {
-        return new AuthorDto(authorRepository.insert(new Author(fullName)));
+        return AuthorDto.fromDomainObject(authorRepository.insert(new Author(fullName)));
     }
 
     @Override
     public AuthorDto update(String id, String name) {
-        return new AuthorDto(authorRepository.save(new Author(id, name)));
+        return AuthorDto.fromDomainObject(authorRepository.save(new Author(id, name)));
     }
 
     @Override
