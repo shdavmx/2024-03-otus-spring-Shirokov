@@ -73,6 +73,14 @@ public class BookServiceImpl implements BookService {
         commentRepository.deleteAllByBookId(id);
     }
 
+    @Override
+    public void deleteAllByAuthorId(String authorId) {
+        List<Book> books = bookRepository.findAllByAuthorId(authorId);
+        for (Book book : books) {
+            deleteById(book.getId());
+        }
+    }
+
     private BookDto save(String id, String title, String authorId, Set<String> genresIds) {
         if (genresIds.isEmpty()) {
             throw new IllegalArgumentException("Genres ids must not be null");

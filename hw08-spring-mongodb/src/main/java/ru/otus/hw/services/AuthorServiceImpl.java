@@ -7,7 +7,6 @@ import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.dto.AuthorDto;
 import ru.otus.hw.repositories.AuthorRepository;
-import ru.otus.hw.repositories.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +19,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorConverter authorConverter;
 
-    private final BookRepository bookRepository;
+    private final BookService bookService;
 
     @Override
     public List<AuthorDto> findAll() {
@@ -55,6 +54,6 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         authorRepository.deleteById(id);
-        bookRepository.deleteAllByAuthorId(id);
+        bookService.deleteAllByAuthorId(id);
     }
 }
