@@ -23,7 +23,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto findById(String id) {
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isPresent()) {
-            return new CommentDto(comment.get());
+            return CommentDto.fromDomainObject(comment.get());
         }
         throw new EntityNotFoundException("Comment with id '%s' not found".formatted(id));
     }
@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentDto> findAllByBookId(String bookId) {
         return commentRepository.findAllByBookId(bookId).stream()
-                .map(CommentDto::new)
+                .map(CommentDto::fromDomainObject)
                 .toList();
     }
 
@@ -61,6 +61,6 @@ public class CommentServiceImpl implements CommentService {
         }
 
         Comment comment = new Comment(id, commentText, book.get());
-        return new CommentDto(commentRepository.save(comment));
+        return CommentDto.fromDomainObject(commentRepository.save(comment));
     }
 }

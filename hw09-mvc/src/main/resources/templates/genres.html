@@ -37,7 +37,7 @@
 <body>
   <h2 class="m-5">Genre list</h2>
   <div class="d-actions">
-    <input type="button" value="Add genre"/>
+    <a href="genre-edit.html" th:href="@{/genres/edit?id=0}"><button type="button">Add genre</button></a>
     <a th:href="@{/}" href="library.html">back</a>
   </div>
   <table class="table">
@@ -53,9 +53,9 @@
       <td th:text="${genre.id}">Id</td>
       <td th:text="${genre.name}">Name</td>
       <td>
-        <a th:href="@{/genre-edit(id=${genre.id})}"
+        <a th:href="@{/genres/edit(id=${genre.id})}"
            href="genre-edit.html">Edit</a>
-        <a th:href="@{/delete(id=${genre.id})}"
+        <a th:href="@{/genres/delete(id=${genre.id})}"
            href="genres.html">Delete</a>
       </td>
     </tr>

@@ -3,7 +3,6 @@ package ru.otus.hw.services;
 import ru.otus.hw.models.dto.BookDto;
 
 import java.util.List;
-import java.util.Set;
 
 public interface BookService {
     BookDto findById(String id);
@@ -12,9 +11,9 @@ public interface BookService {
 
     List<BookDto> findAllByAuthorId(String authorId);
 
-    BookDto insert(String title, String authorId, Set<String> genresIds);
+    BookDto insert(String title, String authorId, List<String> genresIds);
 
-    BookDto update(String id, String title, String authorId, Set<String> genresIds);
+    BookDto update(String id, String title, String authorId, List<String> genresIds);
 
     void deleteById(String id);
 }

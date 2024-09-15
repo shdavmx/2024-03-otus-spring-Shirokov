@@ -1,8 +1,11 @@
 package ru.otus.hw.models.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.otus.hw.models.Book;
+import ru.otus.hw.models.BookFormModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +15,8 @@ import java.util.stream.Collectors;
 public class BookDto {
     private String id;
 
+    @NotBlank(message = "Title can not be empty")
+    @Size(min = 2, max = 20, message = "Invalid title size. Expected size from 2 to 20")
     private String title;
 
     private AuthorDto author;
@@ -39,6 +44,11 @@ public class BookDto {
         return genres.stream()
                 .map(GenreDto::getName)
                 .collect(Collectors.joining(","));
+    }
+
+    public BookFormModel toFormModel() {
+        return new BookFormModel(id, title, author.getId(),
+                genres.stream().map(GenreDto::getId).toList());
     }
 
     public static BookDto fromDomainObject(Book book) {

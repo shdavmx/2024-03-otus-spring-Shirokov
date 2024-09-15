@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.otus.hw.models.dto.AuthorDto;
 import ru.otus.hw.services.AuthorService;
 
@@ -42,7 +44,12 @@ public class AuthorController {
             return "author-edit";
         }
 
-        authorService.update(author.getId(), author.getFullName());
+        if (author.getId().equals("0")) {
+            authorService.insert(author.getFullName());
+        } else {
+            authorService.update(author.getId(), author.getFullName());
+        }
+
         return "redirect:/authors";
     }
 }

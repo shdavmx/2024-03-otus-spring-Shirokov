@@ -37,7 +37,7 @@
 <body>
   <h2 class="m-5">Book list</h2>
   <div class="d-actions">
-    <input type="button" value="Add book"/>
+    <a href="book-edit.html" th:href="@{/books/edit?id=0}"><button type="button">Add book</button></a>
     <a th:href="@{/}" href="library.html">back</a>
   </div>
   <table class="table">
@@ -61,6 +61,8 @@
       </td>
       <td th:text="${book.genresString()}">Genres</td>
       <td>
+        <a th:href="@{/books/info(id=${book.id})}"
+           href="book-details.html">Show details</a>
         <a th:href="@{/books/edit(id=${book.id})}"
            href="book-edit.html">Edit</a>
         <a th:href="@{/books/delete(id=${book.id})}"

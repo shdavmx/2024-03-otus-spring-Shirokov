@@ -14,7 +14,6 @@ import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -51,12 +50,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto insert(String title, String authorId, Set<String> genresIds) {
+    public BookDto insert(String title, String authorId, List<String> genresIds) {
         return save(null, title, authorId, genresIds);
     }
 
     @Override
-    public BookDto update(String id, String title, String authorId, Set<String> genresIds) {
+    public BookDto update(String id, String title, String authorId, List<String> genresIds) {
         return save(id, title, authorId, genresIds);
     }
 
@@ -70,7 +69,7 @@ public class BookServiceImpl implements BookService {
         commentRepository.deleteAllByBookId(id);
     }
 
-    private BookDto save(String id, String title, String authorId, Set<String> genresIds) {
+    private BookDto save(String id, String title, String authorId, List<String> genresIds) {
         if (genresIds.isEmpty()) {
             throw new IllegalArgumentException("Genres ids must not be null");
         }

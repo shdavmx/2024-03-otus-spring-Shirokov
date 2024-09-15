@@ -37,7 +37,7 @@
 <body>
   <h2 class="m-5">Author list</h2>
   <div class="d-actions">
-    <input type="button" value="Add author"/>
+    <a href="author-edit.html" th:href="@{/authors/edit?id=0}"><button type="button">Add author</button></a>
     <a th:href="@{/}" href="library.html">back</a>
   </div>
   <table class="table">

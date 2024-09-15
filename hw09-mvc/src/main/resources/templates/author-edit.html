@@ -29,12 +29,12 @@
 </head>
 <body>
 
-    <form id="edit-form" action="author-edit.html" th:action="@{/authors/edit(id=${author.id})}" th:method="post" th:object="${author}">
+    <form id="edit-form" action="author-edit.html" th:action="@{/authors/edit}" th:method="post" th:object="${author}">
         <h3>Author Info:</h3>
 
         <div class="row">
             <label for="id-input">Id:</label>
-            <input id="id-input" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
+            <input id="id-input" type="text" th:readonly="${author.id} != '0'" name="id" th:value="*{id}" value="1"/>
         </div>
 
         <div class="row">
