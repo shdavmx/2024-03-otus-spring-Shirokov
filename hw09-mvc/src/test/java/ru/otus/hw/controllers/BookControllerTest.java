@@ -1,7 +1,6 @@
 package ru.otus.hw.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -77,16 +76,16 @@ public class BookControllerTest {
     private ObjectMapper mapper;
 
     @MockBean
-    private CommentServiceImpl commentService;
+    private CommentService commentService;
 
     @MockBean
-    private GenreServiceImpl genreService;
+    private GenreService genreService;
 
     @MockBean
-    private AuthorServiceImpl authorService;
+    private AuthorService authorService;
 
     @MockBean
-    private BookServiceImpl bookService;
+    private BookService bookService;
 
     @DisplayName("should return all books")
     @Test
@@ -134,7 +133,7 @@ public class BookControllerTest {
 
         BookFormModel expectedBook = testBooks.get(0).toFormModel();
 
-        mvc.perform(get("/books/edit?id="+TEST_BOOK_ID))
+        mvc.perform(get("/books/edit/"+TEST_BOOK_ID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("book-edit"))
                 .andExpect(model().attributeExists("book"))

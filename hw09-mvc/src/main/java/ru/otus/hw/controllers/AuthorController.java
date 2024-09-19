@@ -6,8 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.hw.models.dto.AuthorDto;
 import ru.otus.hw.services.AuthorService;
 
@@ -31,8 +32,8 @@ public class AuthorController {
         return "redirect:/authors";
     }
 
-    @GetMapping("/authors/edit")
-    public String getEditAuthor(@RequestParam("id") String id, Model model) {
+    @GetMapping("/authors/edit/{id}")
+    public String getEditAuthor(@PathVariable("id") String id, Model model) {
         AuthorDto author = authorService.findById(id);
         model.addAttribute("author", author);
         return "author-edit";

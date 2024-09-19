@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.hw.models.dto.GenreDto;
-import ru.otus.hw.services.GenreServiceImpl;
+import ru.otus.hw.services.GenreService;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class GenreControllerTest {
     private ObjectMapper mapper;
 
     @MockBean
-    private GenreServiceImpl genreService;
+    private GenreService genreService;
 
     @DisplayName("should return all expected genres")
     @Test
@@ -71,7 +71,7 @@ public class GenreControllerTest {
     public void shouldReturnGenreToEdit() throws Exception {
         given(genreService.findById(TEST_GENRE_ID)).willReturn(testGenres.get(0));
 
-        mvc.perform(get("/genres/edit?id="+TEST_GENRE_ID))
+        mvc.perform(get("/genres/edit/"+TEST_GENRE_ID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("genre-edit"))
                 .andExpect(model().attributeExists("genre"))

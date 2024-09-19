@@ -12,11 +12,10 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.hw.models.dto.AuthorDto;
-import ru.otus.hw.services.AuthorServiceImpl;
+import ru.otus.hw.services.AuthorService;
 
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class AuthorControllerTest {
     private ObjectMapper mapper;
 
     @MockBean
-    private AuthorServiceImpl authorService;
+    private AuthorService authorService;
 
     @DisplayName("should return all expected authors")
     @Test
@@ -72,7 +71,7 @@ public class AuthorControllerTest {
     public void shouldReturnAuthorToEdit() throws Exception {
         given(authorService.findById(TEST_AUTHOR_ID)).willReturn(testAuthors.get(0));
 
-        mvc.perform(get("/authors/edit?id="+TEST_AUTHOR_ID))
+        mvc.perform(get("/authors/edit/"+TEST_AUTHOR_ID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("author-edit"))
                 .andExpect(model().attributeExists("author"))

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.hw.models.dto.GenreDto;
@@ -32,8 +33,8 @@ public class GenreController {
         return "redirect:/genres";
     }
 
-    @GetMapping("/genres/edit")
-    public String getEditGenre(@RequestParam("id") String id, Model model) {
+    @GetMapping("/genres/edit/{id}")
+    public String getEditGenre(@PathVariable("id") String id, Model model) {
         GenreDto genre = new GenreDto("0", "New_Genre");
         if (!Objects.equals(id, "0")) {
             genre = genreService.findById(id);

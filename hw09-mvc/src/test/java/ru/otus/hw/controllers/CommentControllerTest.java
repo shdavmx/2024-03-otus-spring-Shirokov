@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.hw.models.CommentFormModel;
-import ru.otus.hw.services.CommentServiceImpl;
+import ru.otus.hw.services.CommentService;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class CommentControllerTest {
     private ObjectMapper mapper;
 
     @MockBean
-    private CommentServiceImpl commentService;
+    private CommentService commentService;
 
     @DisplayName("should add new comment")
     @Test
