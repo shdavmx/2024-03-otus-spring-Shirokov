@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <style type="text/css">
+        html, body {
+            width: 99%;
+            height: 99%;
+        }
+        .m-5 {
+            margin: 5px;
+        }
+    </style>
+<body>
+    <h2 class="m-5">Library categories</h2>
+    <div class="m-5">
+        <a class="m-5" th:href="@{/books}" href="books.html">Books</a>
+        <a class="m-5" th:href="@{/authors}" href="authors.html">Authors</a>
+        <a class="m-5" th:href="@{/genres}" href="genres.html">Genres</a>
+    </div>
+</body>
+</html>
