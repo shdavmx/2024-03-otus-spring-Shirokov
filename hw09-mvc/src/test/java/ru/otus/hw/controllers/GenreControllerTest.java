@@ -61,7 +61,7 @@ public class GenreControllerTest {
     @DisplayName("should delete genre by id")
     @Test
     public void shouldDeleteGenreById() throws Exception {
-        mvc.perform(get("/genres/delete?id=" + TEST_GENRE_ID))
+        mvc.perform(post("/genres/delete?id=" + TEST_GENRE_ID))
                 .andExpect(status().is3xxRedirection());
         verify(genreService, times(1)).deleteById(TEST_GENRE_ID);
     }

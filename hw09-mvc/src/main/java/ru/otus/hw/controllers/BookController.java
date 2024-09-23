@@ -41,14 +41,14 @@ public class BookController {
         return "books";
     }
 
-    @GetMapping("/books/delete")
+    @PostMapping("/books/delete")
     public String deleteBookById(@RequestParam("id") String id) {
         bookService.deleteById(id);
         return "redirect:/books";
     }
 
-    @GetMapping("/books/info")
-    public String getInfoBook(@RequestParam("id") String id, Model model) {
+    @GetMapping("/books/info/{id}")
+    public String getInfoBook(@PathVariable("id") String id, Model model) {
         BookDto book = bookService.findById(id);
         List<CommentDto> comments = commentService.findAllByBookId(id);
         model.addAttribute("book", book);

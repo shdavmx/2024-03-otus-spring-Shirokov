@@ -26,7 +26,7 @@ public class AuthorController {
         return "authors";
     }
 
-    @GetMapping("/authors/delete")
+    @PostMapping("/authors/delete")
     public String deleteAuthorById(@RequestParam("id") String id) {
         authorService.deleteById(id);
         return "redirect:/authors";

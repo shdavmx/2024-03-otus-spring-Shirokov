@@ -24,13 +24,19 @@
       }
 
       .table tr td, th {
-          min-width: 100px;
+          min-width: 70px;
           padding: 5px;
           border: 1px solid steelblue;
       }
 
-      .table td:last-child, td:first-child {
+      .table td:first-child {
           width: 50px;
+      }
+      .table td:last-child {
+          width: 100px;
+      }
+      button {
+        width: 70px;
       }
     </style>
 </head>
@@ -53,10 +59,11 @@
       <td th:text="${author.id}">Id</td>
       <td th:text="${author.fullName}">Full Name</td>
       <td>
-        <a th:href="@{/authors/edit(id=${author.id})}"
-           href="author-edit.html">Edit</a>
-        <a th:href="@{/authors/delete(id=${author.id})}"
-           href="authors.html">Delete</a>
+        <a th:href="@{/authors/edit/{id}(id=${author.id})}"
+           href="author-edit.html"><button type="button">Edit</button></a>
+        <form th:action="@{/authors/delete(id=${author.id})}" th:method="post">
+            <button type="submit">Delete</button>
+        </form>
       </td>
     </tr>
     </tbody>

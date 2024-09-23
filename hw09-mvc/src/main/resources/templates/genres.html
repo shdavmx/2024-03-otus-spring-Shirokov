@@ -29,8 +29,14 @@
           border: 1px solid steelblue;
       }
 
-      .table td:last-child, td:first-child {
+      .table td:first-child {
           width: 50px;
+      }
+      .table td:last-child {
+          width: 100px;
+      }
+      button {
+        width: 70px;
       }
     </style>
 </head>
@@ -53,10 +59,11 @@
       <td th:text="${genre.id}">Id</td>
       <td th:text="${genre.name}">Name</td>
       <td>
-        <a th:href="@{/genres/edit(id=${genre.id})}"
-           href="genre-edit.html">Edit</a>
-        <a th:href="@{/genres/delete(id=${genre.id})}"
-           href="genres.html">Delete</a>
+        <a th:href="@{/genres/edit/{id}(id=${genre.id})}"
+           href="genre-edit.html"><button type="button">Edit</button></a>
+        <form th:action="@{/genres/delete(id=${genre.id})}" th:method="post">
+          <button type="submit">Delete</button>
+        </form>
       </td>
     </tr>
     </tbody>

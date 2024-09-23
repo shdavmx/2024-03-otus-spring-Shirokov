@@ -61,7 +61,7 @@ public class AuthorControllerTest {
     @DisplayName("should delete author by id")
     @Test
     public void shouldDeleteAuthorById() throws Exception {
-        mvc.perform(get("/authors/delete?id=" + TEST_AUTHOR_ID))
+        mvc.perform(post("/authors/delete?id=" + TEST_AUTHOR_ID))
                 .andExpect(status().is3xxRedirection());
         verify(authorService, times(1)).deleteById(TEST_AUTHOR_ID);
     }

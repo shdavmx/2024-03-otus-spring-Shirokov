@@ -102,7 +102,7 @@ public class BookControllerTest {
     @DisplayName("should delete book by id")
     @Test
     public void shouldDeleteBookById() throws Exception {
-        mvc.perform(get("/books/delete?id=" + TEST_BOOK_ID))
+        mvc.perform(post("/books/delete?id=" + TEST_BOOK_ID))
                 .andExpect(status().is3xxRedirection());
         verify(bookService, times(1)).deleteById(TEST_BOOK_ID);
     }
@@ -113,7 +113,7 @@ public class BookControllerTest {
         given(bookService.findById(TEST_BOOK_ID)).willReturn(testBooks.get(0));
         given(commentService.findAllByBookId(TEST_BOOK_ID)).willReturn(testComments);
 
-        mvc.perform(get("/books/info?id="+TEST_BOOK_ID))
+        mvc.perform(get("/books/info/"+TEST_BOOK_ID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("book-details"))
                 .andExpect(model().attributeExists("book"))
