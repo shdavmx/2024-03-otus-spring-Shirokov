@@ -34,7 +34,10 @@ public class AuthorController {
 
     @GetMapping("/authors/edit/{id}")
     public String getEditAuthor(@PathVariable("id") String id, Model model) {
-        AuthorDto author = authorService.findById(id);
+        AuthorDto author = new AuthorDto("0", "New author");
+        if (!id.equals("0")) {
+            author = authorService.findById(id);
+        }
         model.addAttribute("author", author);
         return "author-edit";
     }

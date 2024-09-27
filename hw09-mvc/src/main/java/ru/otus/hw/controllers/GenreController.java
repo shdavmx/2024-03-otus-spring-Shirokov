@@ -49,7 +49,7 @@ public class GenreController {
             return "genre-edit";
         }
 
-        if (genre.getId().equals("0")) {
+        if (genre.getId() == null || genre.getId().equals("0")) {
             genreService.insert(genre.getName());
         } else {
             genreService.update(genre.getId(), genre.getName());
