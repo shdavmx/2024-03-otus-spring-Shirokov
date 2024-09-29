@@ -14,7 +14,7 @@ import ru.otus.hw.services.CommentService;
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("comments/add")
+    @PostMapping("/comments/add")
     public String addComment(@Valid CommentFormModel comment,
                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -22,6 +22,6 @@ public class CommentController {
         }
 
         commentService.insert(comment.getComment(), comment.getBookId());
-        return "redirect:/books/info?id=" + comment.getBookId();
+        return "redirect:/books/info/" + comment.getBookId();
     }
 }

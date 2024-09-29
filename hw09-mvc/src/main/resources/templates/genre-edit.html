@@ -30,11 +30,11 @@
 <body>
 
     <form id="edit-form" action="genre-edit.html" th:action="@{/genres/edit}" th:method="post" th:object="${genre}">
-        <h3>Author Info:</h3>
+        <h3>Genre Info:</h3>
 
         <div class="row">
             <label for="id-input">Id:</label>
-            <input id="id-input" type="text" th:readonly="${genre.id} != '0'" th:value="*{id}" value="1"/>
+            <input id="id-input" type="text" th:readonly="*{id} != '0'" name="id" th:value="*{id}" value="1"/>
         </div>
 
         <div class="row">

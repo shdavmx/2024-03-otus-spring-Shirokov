@@ -61,13 +61,13 @@
       <td th:text="${book.id}">Id</td>
       <td th:text="${book.title}">Title</td>
       <td>
-        <a th:href="@{/authors/edit(id=${book.author.id})}"
+        <a th:href="@{/authors/edit/{id}(id=${book.author.id})}"
            href="author-edit.html"
            th:text="${book.author.fullName}">Author</a>
       </td>
       <td th:text="${book.genresString()}">Genres</td>
       <td>
-        <a th:href="@{/books/info(id=${book.id})}"
+        <a th:href="@{/books/info/{id}(id=${book.id})}"
            href="book-details.html"><button type="button">Show details</button></a>
         <a th:href="@{/books/edit/{id}(id=${book.id})}"
            href="book-edit.html"><button type="button">Edit</button></a>
