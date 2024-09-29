@@ -8,6 +8,8 @@ spring:
       host: localhost
       port: 27017
       database: hw11
+server:
+  port: 8089
 
 mongock:
   runner-type: "InitializingBean"

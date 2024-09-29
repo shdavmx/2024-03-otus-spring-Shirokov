@@ -1,5 +1,5 @@
 function onPageLoaded() {
-    fetch('/api/authors')
+    fetch('http://localhost:8089/api/authors')
         .then(response => response.json())
         .then(json => buildAuthorsTable(json));
 }

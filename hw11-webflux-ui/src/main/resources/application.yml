@@ -1,0 +1,6 @@
+application:
+  title: hw11-webflux-ui
+  version: 1.0
+
+server:
+  port: 8088
