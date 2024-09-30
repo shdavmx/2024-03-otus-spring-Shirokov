@@ -8,19 +8,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.models.BookFormModel;
 import ru.otus.hw.models.dto.BookDto;
-import ru.otus.hw.services.AuthorService;
 import ru.otus.hw.services.BookService;
-import ru.otus.hw.services.CommentService;
-import ru.otus.hw.services.GenreService;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,8 +26,8 @@ public class BookController {
         return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/books")
-    public ResponseEntity<Mono<Void>> deleteBookById(@RequestParam("id") String id) {
+    @DeleteMapping("/api/books/{id}")
+    public ResponseEntity<Mono<Void>> deleteBookById(@PathVariable("id") String id) {
         return new ResponseEntity<>(bookService.deleteById(id), HttpStatus.OK);
     }
 
@@ -54,7 +48,8 @@ public class BookController {
                     HttpStatus.CREATED);
         }
 
-        return new ResponseEntity<>(bookService.update(book.getId(), book.getTitle(), book.getAuthorId(), book.getGenreIds()),
+        return new ResponseEntity<>(
+                bookService.update(book.getId(), book.getTitle(), book.getAuthorId(), book.getGenreIds()),
                 HttpStatus.OK);
     }
 }

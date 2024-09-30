@@ -10,7 +10,6 @@ import ru.otus.hw.models.dto.GenreDto;
 import ru.otus.hw.repositories.BookRepositoryCustom;
 import ru.otus.hw.repositories.GenreRepository;
 
-import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor

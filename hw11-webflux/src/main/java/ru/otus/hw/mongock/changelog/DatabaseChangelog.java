@@ -2,6 +2,7 @@ package ru.otus.hw.mongock.changelog;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
+import com.mongodb.DBRef;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -9,8 +10,6 @@ import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
 import ru.otus.hw.models.Genre;
-import ru.otus.hw.repositories.BookRepository;
-import ru.otus.hw.repositories.CommentRepository;
 
 import java.util.List;
 
@@ -71,12 +70,45 @@ public class DatabaseChangelog {
     }
 
     @ChangeSet(order = "004", id = "insertBooks", author = "dshirokov")
-    public void invertBooks(BookRepository bookRepository) {
-        bookRepository.saveAll(testBookCollection);
+    public void invertBooks(MongoDatabase db) throws Exception {
+        MongoCollection<Document> bookCollection = db.getCollection("books");
+        List<Document> docs = List.of(
+                new Document().append("_id", "1").append("title", "Book_1")
+                        .append("author", new DBRef("authors", "1"))
+                        .append("genres", List.of(
+                                new DBRef("genres", "1"),
+                                new DBRef("genres", "2"))),
+                new Document().append("_id", "2").append("title", "Book_2")
+                        .append("author", new DBRef("authors", "2"))
+                        .append("genres", List.of(
+                                new DBRef("genres", "3"),
+                                new DBRef("genres", "4"))),
+                new Document().append("_id", "3").append("title", "Book_3")
+                        .append("author", new DBRef("authors", "3"))
+                        .append("genres", List.of(
+                                new DBRef("genres", "5"),
+                                new DBRef("genres", "6")))
+        );
+        bookCollection.insertMany(docs);
     }
 
     @ChangeSet(order = "005", id = "insertComments", author = "dshirokov")
-    public void insertComments(CommentRepository commentRepository) {
-        commentRepository.saveAll(testComments);
+    public void insertComments(MongoDatabase db) throws Exception {
+        MongoCollection<Document> commentCollection = db.getCollection("comments");
+        List<Document> docs = List.of(
+                new Document().append("_id", "1").append("comment", "Comment_1")
+                        .append("book", new DBRef("books", "1")),
+                new Document().append("_id", "2").append("comment", "Comment_2")
+                        .append("book", new DBRef("books", "2")),
+                new Document().append("_id", "3").append("comment", "Comment_3")
+                        .append("book", new DBRef("books", "3")),
+                new Document().append("_id", "4").append("comment", "Comment_4")
+                        .append("book", new DBRef("books", "4")),
+                new Document().append("_id", "5").append("comment", "Comment_5")
+                        .append("book", new DBRef("books", "5")),
+                new Document().append("_id", "6").append("comment", "Comment_6")
+                        .append("book", new DBRef("books", "6"))
+        );
+        commentCollection.insertMany(docs);
     }
 }

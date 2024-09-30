@@ -5,8 +5,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.models.Book;
 
-import java.util.List;
-
 public interface BookRepository extends ReactiveMongoRepository<Book, String> {
     Flux<Book> findAllByAuthorId(String authorId);
 

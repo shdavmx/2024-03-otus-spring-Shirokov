@@ -1,0 +1,54 @@
+.main {
+    display: flex;
+    margin: 5px;
+    border: 1px solid;
+    height: 30%;
+}
+img {
+    height: 95%;
+    width: 30%;
+    border: 1px solid;
+    margin: 5px;
+}
+.info {
+    display: flex;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid;
+    width: 99%;
+    max-height: 200px;
+    flex-direction: column;
+}
+.p-description {
+    max-height: 100px;
+    border: 1px solid;
+    overflow-y: scroll;
+}
+.comments {
+    direction: flex;
+    flex-direction: column;
+    border: 1px solid;
+    min-height: 100px;
+}
+.div-add-comment {
+    margin: 5px;
+}
+.p-add-comment {
+    width: 90%;
+}
+.list-comments {
+    margin: 5px;
+    border: 1px solid;
+    min-height: 30px;
+}
+.comment {
+    display: flex;
+    margin: 3px;
+    border: 1px solid;
+    justify-content: center;
+    align-items: center;
+    min-height: 20px;
+}
+.btn-cancel {
+    margin: 5px;
+}

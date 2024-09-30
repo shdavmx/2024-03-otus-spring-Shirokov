@@ -7,15 +7,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.models.dto.GenreDto;
 import ru.otus.hw.services.GenreService;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,8 +24,8 @@ public class GenreController {
         return new ResponseEntity<>(genreService.findAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/genres")
-    public ResponseEntity<Mono<Void>> deleteGenreById(@RequestParam("id") String id) {
+    @DeleteMapping("/api/genres/{id}")
+    public ResponseEntity<Mono<Void>> deleteGenreById(@PathVariable("id") String id) {
         return new ResponseEntity<>(genreService.deleteById(id), HttpStatus.OK);
     }
 

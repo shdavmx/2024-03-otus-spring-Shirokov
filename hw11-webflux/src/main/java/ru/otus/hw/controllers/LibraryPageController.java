@@ -14,17 +14,17 @@ public class LibraryPageController {
     }
 
     @GetMapping("/authors")
-    public String getAuthorView() {
-        return "authors";
+    public Mono<String> getAuthorView() {
+        return Mono.just("authors");
     }
 
     @GetMapping("/genres")
-    public String getGenreView() {
-        return "genres";
+    public Mono<String> getGenreView() {
+        return Mono.just("genres");
     }
 
     @GetMapping("/books")
-    public String getBooksView() {
-        return "books";
+    public Mono<String> getBooksView() {
+        return Mono.just("books");
     }
 }
