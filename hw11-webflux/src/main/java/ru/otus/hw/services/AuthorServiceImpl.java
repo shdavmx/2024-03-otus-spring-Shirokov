@@ -45,7 +45,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Mono<Void> deleteById(String id) {
-        bookRepository.deleteAllByAuthorId(id);
-        return authorRepository.deleteById(id);
+        return authorRepository.deleteById(id)
+                .and(bookRepository.deleteAllByAuthorId(id));
     }
 }

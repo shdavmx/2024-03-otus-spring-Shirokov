@@ -57,18 +57,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Mono<Void> deleteById(String id) {
-        commentRepository.deleteAllByBookId(id);
-        return bookRepository.deleteById(id);
+        return bookRepository.deleteById(id)
+                .and(commentRepository.deleteAllByBookId(id));
     }
 
     private Mono<BookDto> save(String id, String title, String authorId, List<String> genresIds) {
         if (genresIds.isEmpty()) {
             throw new IllegalArgumentException("Genres ids must not be null");
         }
-        return authorRepository.findById(authorId)
-                .flatMap(a ->
-                        genreRepository.findAllById(genresIds).collectList()
-                            .flatMap(gs -> bookRepository.save(new Book(id, title, a, gs))
-                            .map(BookDto::fromDomainObject)));
+
+        return Mono.zip(authorRepository.findById(authorId), genreRepository.findAllById(genresIds).collectList())
+                .flatMap(data -> bookRepository.save(new Book(id, title, data.getT1(), data.getT2()))
+                        .map(BookDto::fromDomainObject));
     }
 }
