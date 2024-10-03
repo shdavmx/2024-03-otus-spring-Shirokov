@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Info</title>
+    <style type="text/css">
+      html, body {
+          width: 99%;
+          height: 99%;
+      }
+      .main {
+            display: flex;
+            margin: 5px;
+            border: 1px solid;
+            height: 30%;
+        }
+        img {
+            height: 95%;
+            width: 30%;
+            border: 1px solid;
+            margin: 5px;
+        }
+        .info {
+            display: flex;
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid;
+            width: 99%;
+            max-height: 200px;
+            flex-direction: column;
+        }
+        .row {
+            margin-top: 10px;
+        }
+        .p-decription {
+            max-height: 100px;
+            border: 1px solid;
+            overflow-y: scroll;
+        }
+        .comments {
+            direction: flex;
+            flex-direction: column;
+            border: 1px solid;
+            min-height: 100px;
+        }
+        .div-add-comment {
+            margin: 5px;
+        }
+        .p-add-comment {
+            width: 90%;
+        }
+        .list-comments {
+            margin: 5px;
+            border: 1px solid;
+        }
+        .comment {
+            display: flex;
+            margin: 3px;
+            border: 1px solid;
+            justify-content: center;
+            align-items: center;
+        }
+        button {
+            height: 20px;
+            width: 50px;
+        }
+        .btn-cancel {
+            margin: 5px;
+        }
+        .d-none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <img />
+        <div class="info">
+            <h3 th:text="${book.title}">Title</h3>
+            <div class="row">
+                <label>Author:</label>
+                <strong th:text="${book.author.fullName}">Author_1</strong>
+            </div>
+        </div>
+    </div>
+    <div class="comments">
+        <form class="div-add-comment" action="book-details.html" th:action="@{/comments/add}" th:method="post" th:object="${comment}">
+            <div class="row">
+                <label for="comment-input">Comment:</label>
+                <input id="comment-input" type="text" name="comment" class="input-add-comment" placeholder="add comment" th:value="*{comment}"/>
+                <div class="errors" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Wrong commentr</div>
+            </div>
+
+            <div class="row d-none">
+                <label for="Book-input">Book Id:</label>
+                <input id="Book-input" type="text" name="bookId" class="input-add-comment" placeholder="add comment" th:value="*{bookId}"/>
+            </div>
+            <button type="submit">Add</button>
+        </form>
+        <label>Comments:</label>
+        <div class="list-comments">
+            <div class="comment" th:each="comment : ${comments}">
+                <p class="p-add-comment" th:text="${comment.comment}">comment</p>
+            </div>
+        </div>
+    </div>
+    <a href="books.html" th:href="@{/books}"><button type="button" class="btn-cancel">Back</button></a>
+</body>
+</html>
