@@ -1,0 +1,20 @@
+spring:
+  shell:
+    script:
+      enabled: true
+    interactive:
+      enabled: true
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: test
+
+mongock:
+  #runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.hw.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
