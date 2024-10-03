@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Genres</title>
+
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+
+    <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/genres.js"></script>
+</head>
+<body onload="onPageLoaded()">
+  <h2 class="m-5">Genre list</h2>
+  <div class="d-actions">
+    <button onclick="onEditGenreClick({id: '0', name: 'New genre'})">Add genre</button>
+    <a th:href="@{/}" href="library.html">back</a>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="tbGenres">
+
+    </tbody>
+  </table>
+
+  <div class="d-popup d-none">
+    <div class="d-popup-content">
+      <h3>Genre Info:</h3>
+
+      <div class="row">
+          <label for="genre-name-input">Name:</label>
+          <input id="genre-name-input" type="text" value="Genre 1"/>
+          <div class="errors d-none">Wrong genre name</div>
+      </div>
+
+      <div class="row">
+          <button id="btnSaveGenre">Save</button>
+          <button onclick="onCancelGenreClick()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

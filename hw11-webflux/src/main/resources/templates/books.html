@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+    <link rel="stylesheet" href="/css/book-details.css" />
+
+    <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/books.js"></script>
+    <script src="/js/comments.js"></script>
+</head>
+<body onload="onPageLoaded()">
+  <h2 class="m-5">Book list</h2>
+  <div class="d-actions">
+    <button onclick="onEditBookClick({id: '0', title: 'New author', author: {id: '0'}, genres: [{id: '0'}]})">Add book</button>
+    <a th:href="@{/}" href="library.html">back</a>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Genres</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="tbBooks">
+    </tbody>
+  </table>
+
+  <div id="editPopup" class="d-popup d-none">
+    <div class="d-popup-content" style="height: 215px;">
+      <h3>Book Info:</h3>
+
+      <div class="row">
+          <label for="book-name-input">Name:</label>
+          <input id="book-name-input" type="text" value="New title"/>
+      </div>
+
+      <div class="row">
+        <label for="book-author-selector">Author:</label>
+        <select id="book-author-selector" name="author">
+        </select>
+      </div>
+
+      <div class="row">
+          <label for="book-genre-selector">Genres:</label>
+          <select id="book-genre-selector" name="genres" multiple="multiple">
+          </select>
+      </div>
+
+      <div class="row">
+          <button id="btnSaveBook">Save</button>
+          <button onclick="onCancelBookClick()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="detailsPopup" class="d-popup d-none">
+    <div class="d-popup-content" style="height: 400px; width: 500px;">
+      <div class="main">
+        <img />
+        <div class="info">
+            <h3 id="bookTitle">Title</h3>
+            <div class="row">
+                <label>Author:</label>
+                <strong id="bookAuthor">Author_1</strong>
+            </div>
+        </div>
+      </div>
+      <div class="comments">
+          <div>
+            <div class="row">
+              <label for="comment-input">Comment:</label>
+              <input id="comment-input" type="text" name="comment" class="input-add-comment" placeholder="add comment"/>
+            </div>
+            <button id="btnAddComment">Add</button>
+          </div>
+          <label>Comments:</label>
+          <div class="list-comments">
+            
+          </div>
+      </div>
+      <button onclick="onCancelBookClick()">Cancel</button>
+    </div>
+  </div>
+
+</body>
+</html>

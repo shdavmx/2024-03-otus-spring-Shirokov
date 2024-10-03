@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors</title>
+
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+
+    <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/authors.js"></script>
+</head>
+<body onload="onPageLoaded()">
+  <h2 class="m-5">Author list</h2>
+  <div class="d-actions">
+    <button onclick="onEditAuthorClick({id: '0', fullName: 'New author'})">Add author</button>
+    <a href="/">back</a>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Full Name</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="tbAuthors">
+
+    </tbody>
+  </table>
+  <div class="d-popup d-none">
+    <div class="d-popup-content">
+      <h3>Author Info:</h3>
+
+      <div class="row">
+          <label for="author-name-input">Name:</label>
+          <input id="author-name-input" name="fullName" type="text" value="John Doe"/>
+          <div class="errors d-none">Wrong author name</div>
+      </div>
+
+      <div class="row">
+          <button id="btnSaveAuthor">Save</button>
+          <button onclick="onCancelAuthorClick()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
